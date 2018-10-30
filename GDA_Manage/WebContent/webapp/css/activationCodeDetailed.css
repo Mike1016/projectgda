@@ -1,0 +1,52 @@
+.title{
+	width: 100%;
+	position: fixed;
+	top:1rem;
+	padding: 0.3rem 0;
+	background-color: #eee;
+	z-index: 9;
+}
+.title>div{
+	background-color: #fff;
+}
+.title>div>div{
+	width: 20%;
+	padding: 0.3rem 0;
+	text-align: center;
+}
+.title>div>div.active{
+	color: #8B80FE;
+	border-bottom: 2px solid #8B80FE;
+}
+
+
+.lists{
+	width: 100%;
+	position: absolute;
+	top:19%;
+	background-color: #fff;
+}
+.lists>div{
+	display: none;
+}
+.lists>div.active{
+	display: block;
+}
+.list{
+	width: 100%;
+	padding: 0.4rem 0;
+	border-bottom: 1px solid #F3F3F3;
+}
+.list>div{
+	text-align: center;
+}
+.list>div:nth-child(1){
+	width: 20%;
+}
+.list>div:nth-child(2){
+	width: 30%;
+}
+.list>div:nth-child(3){
+	width: 50%;
+}
+

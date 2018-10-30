@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>激活码</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/team.css" />
+</head>
+<body>
+<div class="content">
+	<header>
+		<div class="header">			
+			<span onclick="javascript:window.location.href='team.html'"  class="mui-icon mui-icon-arrowleft"></span>
+			<p>激活码</p>
+			<span onclick="javascript:window.location.href='activationCodeDetailed.html'" style="position: absolute; top:0; right: 0.5rem;">明细</span>
+		</div>
+		<img src="img/team/tuanduizhongxin.png" alt="" />
+		<p class="jhmgs" style="text-align: center;">激活码： 个</p>
+	</header>
+	
+	<div class="conte">
+		<div class="flexrow jcsa">
+			<div class="tit flexcolumn jcct">会员用户名</div>
+			<div>
+				<input type="text" class="yhm" placeholder="请输入会员用户名" name="" id="" value="" />
+			</div>
+		</div>
+		<div class="flexrow jcsa">
+			<div class="tit flexcolumn jcct">转码个数</div>
+			<div>
+				<input type="number" class="numb" placeholder="请输入转码个数" name="" id="" value="" />
+			</div>
+		</div>
+		<div class="flexrow jcsa">
+			<div class="tit flexcolumn jcct">安全密码</div>
+			<div>
+				<input type="password" class="aqmm" placeholder="请输入安全密码" name="" id="" value="" />
+			</div>
+		</div>
+		<div>
+			<button class="tijiaobtn qd">确认</button>
+		</div>
+	</div>
+	
+	
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type: 'get',
+	url: '/app/customer/showPersonalInfo.do',
+	data: {
+		sessionId: sid
+	},
+	success: function(res) {
+		console.log(res);
+		if(res.status == 1) {
+			var v = res.data;
+			$('.jhmgs').text('激活码： '+v.activationNumber+'个');
+			
+		} else {
+			mui.toast(res.msg);
+		}
+	}
+})
+$('.qd').click(function(){
+	var yhm = $('.yhm').val(),
+		number = $('.numb').val(),
+		aqmm = $('.aqmm').val();
+		
+	if(yhm =='' || number =='' || aqmm ==''){
+		mui.toast("请输入完整信息");
+		return false;   
+	}
+	var data = {
+		sessionId:sid,
+		userName: yhm,
+		account: number,
+		securityPassword: aqmm
+	};
+	console.log(data);
+	ajax({
+		type: "post",
+		url: "/app/customer/giveActivation.do",
+		data: data,
+		success: function(res) {
+			if(res.status == 1) {
+				mui.toast(res.msg);
+				location.reload();
+			} else {
+				mui.toast(res.msg);
+			}
+		}
+	});
+
+})
+</script>
+</html>

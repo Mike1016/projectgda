@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.customHelp.ICustomHelpDAO">
+	<!--查询-->
+	<select id="queryCustomHelplistPage" resultType="pd" parameterType="page">
+		select * from custom_help_t
+		order by create_time desc
+	</select>
+
+	<!--添加-->
+	<insert id="saveCustomHelp" parameterType="com.daka.entry.CustomHelpVO">
+		insert into custom_help_t(img_path,create_time)
+		values (#{imgPath},#{createTime})
+	</insert>
+
+	<!--修改-->
+	<update id="updateCustomHelpById" parameterType="com.daka.entry.CustomHelpVO">
+		update custom_help_t set img_path = #{imgPath},create_time = #{createTime} where id = #{id};
+	</update>
+
+	<select id="queryAll" resultType="com.daka.entry.CustomHelpVO">
+		select * from custom_help_t
+	</select>
+</mapper>

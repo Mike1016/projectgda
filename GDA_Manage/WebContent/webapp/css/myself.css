@@ -1,0 +1,51 @@
+
+.cont{
+	width: 100%;
+	height: auto;
+	background: #fff;
+	margin: 0;
+}
+.cont>div{
+	border-bottom:1px solid #f2f2f2 ;
+}
+.cont>div:last-child{
+	border-bottom: none ;
+}
+.cont img{
+	width: 1.5rem;
+	height: 1.5rem;
+	border-radius: 50%;
+}
+
+.copy{
+	border:none
+}
+.zhi{padding: 0.35rem;}
+.tijiaobtn{
+	width: 70%;
+	margin:0 15% ;
+	border-radius: 5px;
+	color: #fff;
+	background-color: #FE2059;
+	padding: 0.2rem 0;
+	font-size: 0.35rem;
+}
+.code{
+	vertical-align: text-top;
+}
+#uploadAvatar {
+    position: absolute;
+    top: 1.3rem;
+    left: 5.7rem;
+    opacity: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    z-index: 3;
+}
+.zhi>button{
+	margin: 0 0.2rem;
+}
+.tjm{
+	vertical-align: text-top;
+}

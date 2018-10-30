@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>奖金背包</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/knapsackBonus.css" />
+</head>
+<body>
+<div class="content">
+	<header>
+		<div class="header">			
+			<span class="mui-icon mui-icon-arrowleft"  onclick="window.location.href='financial.html'"></span>
+			<p class="header_title">推荐奖励</p>
+		</div>
+	</header>
+		<div class="tittop"> 
+			<div class="flexrow between " >
+				<div >推荐好友</div>
+				<div >获得奖金</div>
+			</div>
+		</div>
+		<div class="text">
+			<div class="sell">
+				<!--
+				<div class="title sell_text">
+					<div>斯蒂芬斯蒂芬斯蒂芬</div>
+					<div>100</div>
+				</div>
+				<div class="title sell_text">
+					<div>斯蒂芬斯蒂芬斯蒂芬</div>
+					<div>100</div>
+				</div>
+				<div class="title sell_text">
+					<div>斯蒂芬斯蒂芬斯蒂芬</div>
+					<div>100</div>
+				</div>-->
+				
+			</div>
+			
+			
+		</div> 	
+		
+	
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">	
+$(".text .sell").css("display","block").siblings().css("display","none");
+
+ajax({
+	type:'get',
+	url:'/app/customer/queryExtensionAward.do',
+	data:{
+		sessionId:sid
+	},
+	success:function(res){
+		console.log(res)
+		var html = '';
+		if(res.data.length>0){
+		$.each(res.data, function(k,v) {
+				html+=	`
+					<div class="title sell_text">
+					<div>${v.userName}</div>
+					<div>${v.extensionAccount}</div>
+				</div>
+				`;
+		});
+        }else {
+            html+=`
+						<div class="wsj">暂无数据·····</div>
+					`;
+		}
+		$(".sell").html(html);
+	}
+});
+</script>
+</html>

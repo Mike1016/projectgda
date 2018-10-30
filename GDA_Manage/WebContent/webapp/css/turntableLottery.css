@@ -1,0 +1,142 @@
+.title{
+	background-image: url(../img/dazhuanpan/beijing.jpg);
+	background-size: 100% 100%;
+	width: 100%;
+	min-height: 20rem;
+	padding-bottom: 0.5rem;
+}
+.mx{
+	width: 15%;
+	position: absolute;
+	top: 1%;
+	right: 0;
+	color: #fff;
+}
+.biaot{
+	width: 60%;
+	margin: 0 auto;
+	padding: 0.3rem 0;
+}
+.dw{width: 100%;}
+.dw>div{
+	width: 30%;
+	padding: 0.4rem 0;
+}
+.hjmd{
+	width: 90%;
+	margin: 0.5rem auto;
+	height: 3.5rem;
+	background-image: url(../img/dazhuanpan/huojiangmingdan.png);
+	background-size: 100% 100%;
+}
+.jllist{
+	width: 90%;
+	position: absolute;
+	top: 1rem;
+	left: 5%;
+	height: 2.1rem;
+	overflow: auto;
+}
+.jllist>p{
+	text-align: center;
+}
+.gz{
+	width: 80%;
+	margin: 0 auto;
+}
+.gzlist{
+	width: 90%;
+	margin: 0.3rem auto;
+}
+.gzlist>p{
+	margin: 0.2rem 0;
+}
+.gzlist>p>span{
+	display: inline-block;
+	width: 25px;
+	padding: 3px 0;
+	background-color: #7b07e5;
+	text-align: center;
+	border-radius: 5px;
+	margin-right: 3px;
+	
+}
+
+
+
+
+main{
+	/*padding-top: 1em;*/
+	width: 90%;
+	margin: 0 auto;
+}
+	table {
+		border-spacing: 0;
+		border-collapse: collapse;
+		text-align: center;
+	}
+	
+	.draw {
+		width: 94%;
+		height: 6.5rem;
+		margin: 0 auto;
+		padding:0.5rem;
+		background-image: url(../img/dazhuanpan/bg.png);
+		background-repeat: no-repeat;
+		background-size: 100%;
+	}
+	
+	.draw .item {
+		/*width: 31.33%;*/
+		height: 1.7rem;
+		background-image: url(../img/dazhuanpan/bg1.png);
+		background-repeat: no-repeat;
+		background-size: 100%;
+	}
+	
+	.draw .item.active {
+		background-image: url(../img/dazhuanpan/bg2.png);
+		background-repeat: no-repeat;
+		background-size: 100%;
+	}
+	
+	.draw .img {
+		display: table-cell;
+		width: 100%;
+		/*height: 61px;*/
+		vertical-align: middle;
+		text-align: center;
+	}
+	
+	.draw .img img {
+		vertical-align: top;
+		width: 1.7rem;
+		height: 1.5rem;
+	}
+	
+	.draw .gap {
+		width: 2%;
+	}
+	
+	.draw .gap-2 {
+		height: 0.1rem;
+	}
+	
+	.draw .name {
+		display: block;
+		margin: 2% 0;
+		/*font-size: 14px;*/
+	}
+	
+	.draw .draw-btn {
+		display: block;
+		height: 1.7rem;
+		/*line-height: 150px;*/
+		/*border-radius: 20px;*/
+		/*font-size: 25px;*/
+		font-weight: 700;
+		text-decoration: none;
+		background-image: url(../img/dazhuanpan/lijichoujiang.png);
+		background-repeat: no-repeat;
+		background-size: 100%;
+	}

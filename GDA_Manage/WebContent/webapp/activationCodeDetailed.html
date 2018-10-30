@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>激活码明细</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/activationCodeDetailed.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft" onclick="window.location.href='activationCode.html'"></span>
+		<p class="header_title">激活码明细</p>
+	</div>
+	<div class="title">
+		<div class="flexrow jcsa">
+			<div data-padid="#nav1" class="active">系统赠送</div>
+			<div  data-padid="#nav2" >激活</div>
+			<div  data-padid="#nav3" >转出</div>
+			<div  data-padid="#nav4" >转入</div>
+		</div>
+	</div>
+	<div class="lists">
+		<div id="nav1" class="active">
+			<div class="list flexrow">
+				<div>数量</div>
+				<div>账户</div>
+				<div>时间</div>
+			</div>
+			<div class="tit">
+				<!--<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>
+				<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>
+				<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>-->
+			</div>
+		</div>
+		<div id="nav2" class="">
+			<div class="list flexrow">
+				<div>数量</div>
+				<div>账户</div>
+				<div>时间</div>
+			</div>
+			<div class="tit">
+				<!--<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>
+				<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>
+				<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>-->
+			</div>
+		</div>
+		<div id="nav3" class="">
+			<div class="list flexrow">
+				<div>数量</div>
+				<div>转出至</div>
+				<div>时间</div>
+			</div>
+			<div class="tit">
+				<!--<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>
+				<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>
+				<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>-->
+			</div>
+		</div>
+		<div id="nav4" class="">
+			<div class="list flexrow">
+				<div>数量</div>
+				<div>转入自</div>
+				<div>时间</div>
+			</div>
+			<div class="tit">
+				<!--<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>
+				<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>
+				<div class="list flexrow">
+					<div>1</div>
+					<div>asffff</div>
+					<div>2018-185-15 21:12:55</div>
+				</div>-->
+			</div>
+		</div>
+		
+	</div>
+	
+</div>
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+function int(type){
+	var t = type.charAt(type.length-1);
+	console.log(t);
+	ajax({
+		type: 'get',
+		url: '/app/activationLog/getActivationInfo.do',
+		data: {
+			sessionId: sid,
+			type:t
+		},
+		success: function(res) {
+			console.log(res);
+			if(res.status == 1) {
+				var h = '';
+				$.each(res.data, function(k,v) {
+					h+=`
+						<div class="list flexrow tit">
+				<div>${v.account}</div>
+				<div>${v.customers}</div>
+				<div>${v.createTime}</div>
+			</div>
+					`;
+				});
+				$(type+'>.tit').html(h);
+			} else {
+				mui.toast(res.msg);
+			}
+		}
+	})
+}
+int('#nav1');
+$('.content').off('click').on('click','[data-padid]',function(){
+	//console.log(2);
+	$(this).addClass('active').siblings().removeClass('active');
+	var id = $(this).attr('data-padid');
+	console.log(id);
+	int(id);
+	$(id).addClass('active').siblings().removeClass('active');
+	
+});
+
+</script>
+</html>

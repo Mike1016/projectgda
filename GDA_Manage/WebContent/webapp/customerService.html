@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>联系客服</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<style type="text/css">
+		.ddt{
+			min-height: 100%;
+			width: 100%;position:absolute;top:1rem;
+			background: url(img/tuiguang/beij.jpg);
+			background-size: 100% 100%;
+		}
+		.ewmt{
+			width: 80%;
+			margin-left: 10%;
+			padding: 1rem;
+			background: url(img/tuiguang/kuang.png);
+			background-size: 100% 100%;
+			margin: 0.2rem 10%;
+		}
+		
+	</style>
+</head>
+<body>
+<div class="content ">
+	<div class="headers" style="width: 100%;position: fixed;top:0;z-index: 1;">
+		<span class="mui-icon mui-icon-arrowleft" onclick="window.location.href='personal.html'"></span>
+		<p class="header_title">联系客服</p>
+	</div>
+	
+	<div class="cont" style="height: 100%;">
+		<div class="ddt">
+			<!--<div class="ewmt">
+				<img src="img/dazhuanpan/bg.png" alt="" />
+			</div>
+			<div class="ewmt">
+				<img src="img/dazhuanpan/bg.png" alt="" />
+			</div>
+			<div class="ewmt">
+				<img src="img/dazhuanpan/bg.png" alt="" />
+			</div>
+			<div class="ewmt">
+				<img src="img/dazhuanpan/bg.png" alt="" />
+			</div>-->
+			
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type:'get',
+	url:'/app/customer/queryAllCustomerHelp.do',
+	data:{
+		sessionId:sid
+	},
+	success:function(res){
+		console.log(res);
+		if(res.status == 1){
+			var html ='';
+			$.each(res.data, function(k,v) {
+				html+=`
+					<div class="ewmt">
+				<img src="${base+v.imgPath}" alt="" />
+			</div>
+				`;
+				$(".ddt").html(html);
+			});
+		}else{
+			mui.toast(res.msg);
+		}
+	}
+});	
+</script>
+</html>

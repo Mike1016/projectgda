@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>个人资料</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/myself.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft " onclick="window.location.href='personal.html'"></span>
+		<p class="header_title">个人资料</p>
+	</div>
+	
+	<div class="cont card">
+		<div class="flexrow jcsb">
+			<div  class="flexcolumn jcct">头像</div>
+			<div>
+				<img id="headimg" src="img/index/touxiang.png" alt="" />
+				<form action="" name="form" id="form" enctype="multipart/form-data" method="post">
+	                <input id="uploadAvatar" type="file" accept="image/*" multiple  name="headImg" onchange="change()"/>
+				</form>
+			</div>
+		</div>
+		<div class="flexrow jcsb">
+			<div class="flexcolumn jcct">用户名</div>
+			<div class="zhi yhm"></div>
+		</div>
+		<div class="flexrow jcsb">
+			<div class="flexcolumn jcct">推荐码</div>
+			<div class="zhi"><button class="jihbtn" data-clipboard-text="">复制</button><span class="tjm">fsfsd</span></div>
+		</div>
+		<div class="flexrow jcsb">
+			<div class="flexcolumn jcct">姓名</div>
+			<div class="zhi xm"></div>
+		</div>
+		<div class="flexrow jcsb">
+			<div class="flexcolumn jcct">手机号</div>
+			<div class="zhi phone"></div>
+		</div>
+		<div class="flexrow jcsb">
+			<div class="flexcolumn jcct">身份证号码</div>
+			<div class="zhi sfz"></div>
+		</div>
+		<div class="flexrow jcsb">
+			<div class="flexcolumn jcct">微信</div>
+			<div class="zhi wx">
+			</div>
+		</div>
+		<div class="flexrow jcsb">
+			<div class="flexcolumn jcct">支付宝账号</div>
+			<div class="zhi zfb">
+			</div>
+		</div>
+		<div class="flexrow jcsb" onclick="javascript:window.location.href='bank.html'">
+			<div class="flexcolumn jcct">银行卡账户</div>
+			<div class="zhi">
+				<span class="mui-icon mui-icon-forward"></span>
+			</div>
+		</div>
+	</div>
+	
+</div>		
+	
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript" src="js/clipboard.min.js"></script>
+<script type="text/javascript">
+	$(()=>{
+		ajax({
+			type:"get",  
+			url:"/app/customer/showPersonalInfo.do",
+			data:{sessionId:sid},
+			success:function(res){
+				console.log(res);
+				if(res.status == 1){
+					var v = res.data;
+					$('.yhm').text(v.userName);
+					$('.jihbtn').attr('data-clipboard-text',v.extensionCode);
+					$('.tjm').text(v.extensionCode);
+					$('.phone').text(v.phone);
+					if(v.headImg){
+						$('#headimg').attr('src',base+v.headImg);
+					}
+					if(v.realName != null){
+						$('.xm').text(v.realName);
+						$('.xm').off('click');
+					}else{
+						$('.xm').text('点击添加姓名');
+					}
+					if(v.identityCard != null){
+						$('.sfz').text(v.identityCard);
+						$('.sfz').off('click');
+					}else{
+						$('.sfz').text('点击添加身份证');
+					}
+					if(v.weChat != null){
+						$('.wx').text(v.weChat);
+					}else{
+						$('.wx').text('点击添加微信');
+					}
+					if(v.alipay != null){
+						$('.zfb').text(v.alipay);
+					}else{
+						$('.zfb').text('点击添加支付宝');
+					}
+				}else{
+					mui.toast(res.msg);
+				}
+			}
+		});
+	});
+var clipboard = new ClipboardJS('.jihbtn');
+
+    clipboard.on('success', function(e) {
+       // console.log(e);
+       mui.toast('复制成功！')
+    });
+
+    clipboard.on('error', function(e) {
+      //  console.log(e);
+      mui.toast('复制失败！')
+    });
+	function change(){
+		var formData = new FormData($('#form')[0]);
+		formData.append("sessionId",sid);
+		$.ajax({
+		    type: 'post',
+		    url:base+'/app/customer/updatePersonalImage.do',
+		    data: formData,
+		    cache: false,
+		    processData: false,
+		    contentType: false,
+		    success:function(res){
+		    	console.log(res);
+		        mui.toast(res.msg);
+				setTimeout(function(){				
+					location.reload();
+				},1000)
+		    }
+		});
+	}
+	
+	$('.xm').click(function(e) {
+		var that = $(this);
+		var btnArray = ['确定', '取消'];
+		mui.prompt('绑定后不可更改！', '请输入姓名', '绑定姓名', btnArray, function(e) {
+			if(e.index == 0) {
+				if(e.value == ''){
+					mui.toast('信息不能为空！');
+					return;
+				}
+				var data = {
+					sessionId:sid,
+					realName:e.value
+				};
+				ajax({
+				type:"post",  
+				url:"/app/customer/updateMessage.do",
+				data:data,
+				success:function(res){
+					console.log(res);
+					if(res.status == 1){
+						that.text(e.value);
+						that.off('click');
+					}else{
+						mui.toast(res.msg);
+					}
+				}
+				});
+			} else {
+				
+			}
+		})
+	});
+	$('.sfz').click(function(e) {
+		var that = $(this);
+		var btnArray = ['确定', '取消'];
+		mui.prompt('绑定后不可更改！', '请输入身份证号码', '绑定身份证', btnArray, function(e) {
+			if(e.index == 0) {
+				if(e.value == ''){
+					mui.toast('信息不能为空！');
+					return;
+				}
+				var data = {
+					sessionId:sid,
+					identityCard:e.value
+				};
+				ajax({
+				type:"post",
+				url:"/app/customer/updateMessage.do",
+				data:data,
+				success:function(res){
+					console.log(res);
+					if(res.status == 1){
+						that.text(e.value);
+						that.off('click');
+					}else{
+						mui.toast(res.msg);
+					}
+				}
+				});
+			} else {
+				
+			}
+		})
+	});
+	$('.wx').click(function(e) {
+		var that = $(this);
+		var btnArray = ['确定', '取消'];
+		mui.prompt('', '请输入微信账号', '微信绑定', btnArray, function(e) {
+			if(e.index == 0) {
+				if(e.value == ''){
+					mui.toast('信息不能为空！');
+					return;
+				}
+				var data = {
+					sessionId:sid,
+					weChat:e.value
+				};
+				ajax({
+				type:"post",
+				url:"/app/customer/updateMessage.do",
+				data:data,
+				success:function(res){
+					console.log(res);
+					if(res.status == 1){
+						that.text(e.value);
+					}else{
+						mui.toast(res.msg);
+					}
+				}
+				});
+			} else {
+				
+			}
+		});
+		if(that.text() != '点击添加微信'){
+			$('input[type=text]').attr('maxlength',25).val(that.text());
+        }
+	});
+	$('.zfb').click(function(e) {
+		var that = $(this);
+		var btnArray = ['确定', '取消'];
+		mui.prompt('', '请输入支付宝账号', '支付宝绑定', btnArray, function(e) {
+			if(e.index == 0) {
+				if(e.value == ''){
+					mui.toast('信息不能为空！');
+					return;
+				}
+				var data = {
+					sessionId:sid,
+					alipay:e.value
+				};
+				ajax({
+				type:"post",
+				url:"/app/customer/updateMessage.do",
+				data:data,
+				success:function(res){
+					console.log(res);
+					if(res.status == 1){
+						that.text(e.value);
+						
+					}else{
+						mui.toast(res.msg);
+					}
+				}
+				});
+			} else {
+				
+			}
+		});
+        if(that.text() != '点击添加支付宝'){
+            $('input[type=text]').attr('maxlength',25).val(that.text());
+        }
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+
+header{
+	width: 100%;
+	height: 5rem;
+	background: url(../img/index/bg.jpg) no-repeat;
+	background-size:100% 100% ;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9;
+}
+
+/*头部信息*/
+.header>div{
+	width: 33.3%;	
+	text-align: center;
+}
+.knapsack{
+	width: 100%;
+	padding: 0.3rem 0;
+	background-color: #8B80FE;
+	position: fixed;
+	top: 3.95rem;
+}
+.knapsack>div{
+	width: 45%;	
+	text-align: center;
+	color: #fff;
+}
+.knapsack>div:first-child{
+	border-right: 1px solid #fff;
+}
+.user{
+	color: #fff;
+	font-size: 0.26rem;
+	margin-top:0.3rem;
+}
+.avatar{
+	width:1.6rem;
+	height:1.6rem;
+	border-radius: 50%;
+	margin-top:0.8rem;
+}
+.level{
+	width:0.5rem;
+	margin-top:-0.6rem;
+	margin-left:1.3rem;
+}
+.all_user{
+	width: 100%;
+	height:1rem;
+	border-radius: 0.1rem 0  0  0.1rem;
+	background: rgba(255,255,255,0.2);
+	margin-top: 0.6rem;
+}
+.all_user p{
+	font-size: 0.24rem;
+	text-align: right;
+	padding-right: 0.1rem;
+}
+.all_money{
+	text-align: center;
+	margin-top: -0.4rem;
+}
+.all_money span{
+	font-size: 0.6rem;
+	font-weight: 500;
+	color: #fff;
+}
+.header p,.all_money p{
+	margin: 0.2rem 0;
+	color: rgba(255,255,255,0.7)
+}
+.header span{
+	color: #fff;
+	font-size: 0.32rem;
+	vertical-align: initial;
+}
+
+.cont{
+	position: relative;
+	top:5rem;
+	margin-top: 0.24rem;
+	/*background: #fff;*/
+}
+.wealth{
+	border-bottom: 1px solid #f2f2f2;
+	padding-bottom: 0.2rem;
+}
+.wealth>div{
+	width: 25%;
+	text-align: center;
+	padding-top: 0.3rem;
+}
+.wealth div img{
+	width: 0.8rem;
+}
+.wealth div p{
+	color:#333;
+	font-size: 0.28rem;
+}
+.wealth div span{
+	font-size: 0.2rem;
+	color: #666;
+}
+
+/**/
+
+
+.title{
+	margin-bottom: -0.2rem;
+}
+.title .buy{
+	line-height: 0.8rem;
+	font-size: 0.32rem;
+	color: #333;
+}
+.title .look{
+	font-size: 0.26rem;
+	color: #999;
+	float: right;
+	margin-top: 0.2rem;
+}
+
+.lg{
+	width: 0.5rem;
+	margin: 0.15rem 0;
+}
+.growing{
+	/*font-size: 0.24rem;*/
+	padding-top:0.1rem;
+	padding-left: 0.2rem;
+	color: #333;
+	margin:0.15rem 0;
+}
+.growing span{
+	color: #999;
+	font-size: 0.26rem;
+	padding-left: 2.6rem;
+}
+.bottom{
+	padding: 0.2rem 0;
+	padding-left:0.2rem;
+}
+.bottom:last-child{
+	margin-bottom: 0.2rem;
+}

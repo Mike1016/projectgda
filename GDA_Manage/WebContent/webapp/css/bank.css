@@ -1,0 +1,105 @@
+.headers{
+	position: fixed;
+	z-index: 9;
+}
+
+.cont{
+	position: relative;
+	top: 1rem;
+	margin-top: 0.24rem;
+}
+.bank{
+	/*display: none;*/
+	margin-top: 0.24rem;
+}
+.bank div:nth-child(1){
+	width: 90%;
+	height: 1rem;
+	line-height: 1rem;
+	color: #fff;
+	background: #8B80FE;
+	padding-left: 0.5rem;
+	border-radius: 0.2rem 0.2rem 0 0;
+	margin: auto;
+}
+.right{
+	/*margin-left: 3rem;*/
+	float: right;
+	padding-right: 0.3rem;
+}
+.bank div:nth-child(2){
+	width: 90%;
+	height: 2rem;
+	line-height: 1rem;
+	color: #333;
+	background: #fff;
+	padding-left: 0.5rem;
+	border-radius: 0 0 0.2rem 0.2rem;
+	margin: auto;
+}
+.bank div:nth-child(2) p:nth-child(1){
+	color: #000;
+	font-size: 0.5rem;
+	padding-top: 0.2rem;
+}
+.bank div:nth-child(2) p:nth-child(2){
+	text-align: right;
+	padding-right: 0.3rem;
+	margin-top:-0.24rem;
+}
+
+.add{
+	/*background: #fff;*/
+	text-align: center;
+	margin: 1.5rem auto;
+}
+/*.add p{
+	display: none;
+}*/
+.open{
+	width: 1.2rem;
+	display: block;
+	margin:0.2rem auto;
+}
+
+
+.tanchuang{
+	display: none;
+}
+.tankuang {
+    width: 90%;
+    height: 12rem; 
+    position: absolute;
+    left: 5%;
+    top: 8%;
+    background-color: #fff;
+}
+.tankuang>p{
+	text-align: center;
+	font-size: 0.5rem;
+	color: #fff;
+	padding: 0.3rem 0;
+	background-color: #8B80FE;
+}
+.tankuang>div{
+	padding: 0.3rem;
+	border-bottom: 1px solid #F2F2F2;
+}
+.tankuang>div:last-child{
+	border-bottom: none;
+}
+
+.tit{
+	width: 20%;
+}
+.inp{
+	width: 65%;
+}
+.yzm{
+	color: #8B80FE;
+	top: 0.3rem;
+}
+.tijiaobtn{
+	width: 30%;
+	margin: 0 5%;
+}

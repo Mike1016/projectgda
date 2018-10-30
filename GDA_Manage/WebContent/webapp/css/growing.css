@@ -1,0 +1,28 @@
+.headers{
+	position: fixed;
+	z-index: 9;
+}
+.cont{
+	position: relative;
+	top: 1rem;
+	margin-top: 0.24rem;
+}
+.cont div{
+	height: 1rem;
+	line-height: 1rem;
+	background: #fff;
+	border-bottom: 1px solid #f2f2f2;
+	margin: auto;
+}
+.flexrow div:nth-child(1){
+	color: #ff4878;
+	font-size: 0.5rem;
+}
+.flexrow div:nth-child(2){
+	color: #666;
+	font-size: 0.3rem;
+}
+
+.flexrow div:last-child{
+	margin-bottom: 0.24rem;
+}

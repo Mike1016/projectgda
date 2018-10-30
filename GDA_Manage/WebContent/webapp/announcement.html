@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>公告</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/announcement.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft" onclick="window.location.href='personal.html'"></span>
+		<p class="header_title">公告</p>
+	</div>
+	
+	<div class="cont">
+		<!--<div class="box">
+			<div class="flexrow jcsb"> 
+				<div>发的发生大发大声道</div>
+				<div>3165461321321321321</div>
+			</div>
+			<div>这是一个公告这是一个公告这是一个公告这是一个公告这是一个公告这是一个公告这是一个公告这是一个公告</div>
+		</div>-->
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type:'get',
+	url:'/app/notice/queryNotice.do',
+	data:{
+		sessionId:sid
+	},
+	success:function(res){
+		console.log(res);
+		if(res.status == 1){
+			var html ='';
+			$.each(res.data, function(k,v) {
+				html+=`
+					<div class="box">
+			<div class="flexrow jcsb"> 
+				<div>${v.title}</div>
+				<div>${v.createTime}</div>
+			</div>
+			<div>${v.content}</div>
+		</div>
+				`;
+				$(".cont").html(html);
+			});
+		}else{
+			mui.toast(res.msg);
+		}
+	}
+});	
+</script>
+</html>

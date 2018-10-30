@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.vitalityLog.IVitalityLogDAO">
+
+	<sql id="vitalitylog">
+		id,type,vitality,customer_id,create_time
+	</sql>
+	
+	<!-- 新增一条生命力变化记录 -->
+	<insert id="insert" parameterType="com.daka.entry.VitalityLogVO">
+		insert into vitality_log_t(type,vitality,customer_id,create_time) 
+		values(#{type},#{vitality},#{customerId},#{createTime})
+	</insert>
+	
+	<!-- 查询一个用户的生命力记录 -->
+	<select id="findAll" parameterType="java.lang.Integer" resultType="com.daka.entry.VitalityLogVO">
+		select * from vitality_log_t where customer_id=#{customerId} and type=#{type} 
+		order by create_time desc limit #{page},20
+	</select>
+	
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into vitality_log_t(type,vitality,customer_id,create_time) values 
+		<foreach collection="list" item="vitalitylog" separator=",">
+			(#{vitalitylog.type},#{vitalitylog.vitality},#{vitalitylog.customerId},
+			#{vitalitylog.createTime})
+		</foreach>
+	</insert>
+	
+	
+	<!-- 添加每日根据不同等级的用户扣除用户生命力的记录 -->
+	<insert id="insertVitalityLog">
+		insert into vitality_log_t(customer_id, vitality, create_time) 
+ 		select id, (select parameter from dictionaries_t where type = `level`), now() from customer_t
+		where state = 1 and vitality<![CDATA[ > ]]>0
+	</insert>
+
+</mapper>

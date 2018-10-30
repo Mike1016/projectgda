@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.activitylog.IActivityLogDAO">
+
+	<sql id="activitylog">
+		id,customer_id,type,account,count,create_time
+	</sql>
+	
+	<!-- 添加活力值变更记录 -->
+	<insert id="insert" parameterType="com.daka.entry.ActivityLogVO">
+		insert into activity_log_t(customer_id,type,account,count,create_time) 
+		values(#{customerId},#{type},#{account},#{count},#{createTime})
+	</insert>
+	
+	<!-- 根据id查询活力值记录 -->
+	<select id="findBycustomer" parameterType="java.util.Map" resultType="com.daka.entry.ActivityLogVO">
+		select 
+		<include refid="activitylog"></include>
+		from activity_log_t where customer_id=#{customerId} and type=#{type}  order by create_time desc limit #{page},20
+	</select>
+
+
+</mapper>

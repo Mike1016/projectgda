@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>抽奖明细</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/knapsackBonus.css" />
+</head>
+<body>
+<div class="content">
+	<header>
+		<div class="header">			
+			<span class="mui-icon mui-icon-arrowleft back" ></span>
+			<p class="header_title">抽奖明细</p>
+		</div>
+	</header>
+		<div class="tittop"> 
+			<div class="flexrow between titte" >
+				<div >活动值</div>
+				<div >奖品</div>
+				<div>日期</div>
+			</div>
+		</div>
+		<div class="text">
+			<div class="sell">
+				
+				<!--<div class="title sell_text tittesx">
+					<div>100</div>
+					<div>斯蒂芬斯蒂</div>
+					<div>2018-12-12 12:12:12</div>
+				</div>
+				<div class="title sell_text tittesx">
+					<div>100</div>
+					<div>斯蒂芬斯</div>
+					<div>2018-12-12 12:12:12</div>
+				</div>
+				<div class="title sell_text tittesx">
+					<div>100</div>
+					<div>斯蒂芬</div>
+					<div>2018-12-12 12:12:12</div>
+				</div>-->
+				
+			</div>
+			
+			<div class="jzgd" style="font-size: 0.4rem;">点击加载更多···</div>
+		</div> 	
+		
+	
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">	
+$(".sell").css("display","block")
+var page = 1;
+function int(){
+	ajax({
+		type:'get',
+		url:'/app/tray/lotteryRecord.do',
+		data:{
+			sessionId:sid,
+			page:page
+		},
+		success:function(res){
+			console.log(res)
+			if(res.status==1&&res.data.length>0){
+				var html = '';
+				$.each(res.data, function(k,v) {
+						html+=	`
+							<div class="sell_text tittesx">
+							<div>${v.vitality}</div>
+							<div>${v.prizes}</div>
+							<div>${v.createTime}</div>
+						</div>
+						`;
+							
+				});
+				$(".sell").append(html);
+			}else{
+				$('.jzgd').hide();
+				mui.toast('无更多数据··');
+			}
+		}
+	})
+}
+int();
+$('.jzgd').click(function(){
+	page++;
+	int();
+});
+</script>
+</html>

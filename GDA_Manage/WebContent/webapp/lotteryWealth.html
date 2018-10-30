@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>抽奖所获财富</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/knapsackBonus.css" />
+</head>
+<body>
+<div class="content">
+	<header>
+		<div class="header">			
+			<span class="mui-icon mui-icon-arrowleft"  onclick="window.location.href='financial.html'"></span>
+			<p class="header_title">抽奖所获财富</p>
+		</div>
+	</header>
+		<div class="tittop"> 
+			<div class="flexrow between ">
+				<div >财富值</div>
+				<div >日期</div>
+			</div>
+		</div>
+		<div class="text">
+			<div class="sell">
+				
+				<!--<div class="title sell_text">
+					<div>200</div>
+					<div>2018-10-10 10：10：10</div>
+				</div>
+				<div class="title sell_text">
+					<div>200</div>
+					<div>2018-10-10 10：10：10</div>
+				</div>
+				<div class="title sell_text">
+					<div>200</div>
+					<div>2018-10-10 10：10：10</div>
+				</div>-->
+				
+			</div>
+			
+			
+		</div> 	
+		
+	
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">	
+$(".text .sell").css("display","block");
+ajax({
+	type:'get',
+	url:'/app/trayLog/getTrayWealth.do',
+	data:{
+		sessionId:sid
+	},
+	success:function(res){
+		console.log(res)
+		if(res.status == 1){
+		var html = '';
+		if(res.data.length>0){}else {}
+		$.each(res.data, function(k,v) {
+				html+=	`
+					<div class="title sell_text">
+					<div>${v.account}</div>
+					<div>${v.create_time}</div>
+				</div>
+				`;
+		});
+        }else {
+            html+=`
+						<div class="wsj">暂无数据·····</div>
+					`;
+		}
+		$(".sell").html(html);
+		}else{
+			mui.toast(res.msg);
+		}
+	}
+})
+</script>
+</html>

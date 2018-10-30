@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>银行账户</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/bank.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">			
+		<span class="mui-icon mui-icon-arrowleft" onclick="window.location.href='personal.html'"></span>
+		<p class="header_title">银行账户</p>
+	</div>
+	<div class="cont">
+		<!--<div class="card">暂无数据,请添加银行卡</div>-->
+		<!--<div class="bank_box">
+			<div class="bank">
+				<div><span>建设银行</span><span class="right">张三</span></div>
+				<div>
+					<p>1478523697789456123</p>
+					<button data-del='1' class="mui-btn-grey" style="width: 20%;margin-left: 75%;">删除</button>
+				</div>
+				<div>
+				</div>
+			</div>
+		</div>-->
+		
+	</div>
+		<div class="add">
+			<img src="img/personal/add.png" alt="" class="open"/>
+		</div>
+		
+	<div class="tanchuang">
+		<div class="tankuang">
+			<p>添加银行卡</p>
+			<div class="flexrow jcct">
+				<div class="tit flexcolumn jcct">账户姓名</div>
+				<div class="inp"><input class="zhxm" type="text" placeholder="请输入银行账户姓名"/></div>
+				
+			</div>	
+			<div class="flexrow jcct">
+				<div class="tit flexcolumn jcct">银行账户</div>
+				<div class="inp"><input class="yhzh" type="text" pattern="\d*" placeholder="请输入银行账户"/></div>
+				
+			</div>
+			<div class="flexrow jcct">
+				<div class="tit flexcolumn jcct">手机号</div>
+				<div class="inp"><input readonly="readonly" class="shoujihao" maxlength="11" type="text" pattern="\d*" placeholder="请输入手机号"/></div>
+				
+			</div>
+			<div class="flexrow jcct pr">
+				<div class="tit flexcolumn jcct">验证码</div>
+				<div class="inp"><input class="smsCode" pattern="\d*" type="text" placeholder="请输入验证码"/></div>
+				<button class="yzm dxyzs">获取验证码</button>
+			</div>
+			<div class="flexrow jcsb">
+				<button class="tijiaobtn qx">取消</button>
+				<button class="tijiaobtn qd">确定</button>
+			</div>
+		</div>
+	</div>
+		
+		
+</div>		
+	
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript" src="js/public.js"></script>
+<script type="text/javascript">	
+$(()=>{
+	ajax({
+		type: "get",
+		url: "/app/bank/showBank.do",
+		data: {sessionId:sid},
+		success: function(res) {
+			console.log(res);
+			if(res.status == 1) {
+				var h = ''; 
+				if(res.data.length>0){
+					$.each(res.data, function(k,v) {
+						h += `
+		<div class="bank_box">
+			<div class="bank">
+				<div><span>${v.bankName}</span><span class="right">${v.cardHolder}</span></div>
+				<div>
+					<p>${v.cardNumber}</p>
+					<button data-del='${v.id}' class="mui-btn-grey del" style="width: 20%;margin-left: 75%;">删除</button>
+				</div>
+			</div>
+		</div>
+						`;
+					});
+				}else{
+					h+=`
+						<div class="card">暂无数据,请添加银行卡</div>
+					`;
+				}
+				$('.cont').html(h);
+			} else {
+				mui.toast(res.msg);
+			}
+		}
+	})
+});
+	
+phone();
+//提交银行卡信息
+$('.qd').click(function(){
+	var zhxm = $('.zhxm').val(),
+		yhzh = $('.yhzh').val(),
+		//shouji = $('.shoujihao').val(),
+		smsCode = $('.smsCode').val();
+	if(zhxm =='' || yhzh =='' || smsCode ==''){
+		mui.toast("请输入完整信息");
+		return false;
+	}
+	var data = {
+		sessionId:sid,
+		cardHolder: zhxm,
+		cardNumber: yhzh,
+		authCode: smsCode
+	};
+	console.log(data);
+	ajax({
+		type: "post",
+		url: "/app/bank/saveBank.do",
+		data: data,
+		success: function(res) {
+			if(res.status == 1) {
+				location.reload();
+			} else {
+				mui.toast(res.msg);
+			}
+		}
+	});
+
+})
+$('.add').click(function(){
+	$('.tanchuang').css('display','block');
+});
+$('.qx').click(function(){
+	$('.tanchuang').css('display','none');
+});
+$('.content').on('tap','.del',function(e){
+	var delid = $(e.target).attr('data-del');
+	var data = { 
+		sessionId:sid,  
+		id: delid
+	};
+	ajax({
+		type: "post",
+		url: "/app/bank/deleteBank.do",
+		data: data,
+		success: function(res) {
+			console.log(res);
+			if(res.status == 1) {
+				location.reload();
+			} else {
+				mui.toast(res.msg);
+			}
+		}
+	});
+});
+
+</script>
+</body>
+</html>

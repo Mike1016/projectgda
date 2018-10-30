@@ -1,0 +1,83 @@
+.headers{
+	position: fixed;
+	z-index: 9;
+}
+.cont{
+	position: relative;
+	top: 1rem;
+	margin-top:0.24rem ;
+}
+
+.flexrow{
+	background: #fff;
+}
+.flexrow div{
+	width: 25%;
+	text-align: center;
+	margin:0 auto;
+	padding: 0.2rem 0;
+}
+.flexrow img{
+	width: 1rem;
+}
+.flexrow p{
+	color: #333;
+}
+.active{
+	border-bottom: 3px solid #8B80FE;
+}
+.active>p{
+	color: #8B80FE;
+}
+.card>div{
+	border-bottom: 1px solid #F2F2F2;
+}
+.card>div:last-child{
+	border-bottom: none;
+}
+.card>div>div{
+	padding: 0.15rem 0;
+}
+.yhxx{
+	padding: 0.2rem 0;
+}
+.yhxx>p:nth-child(1){
+	width: 40%;
+}
+.yhxx>p:nth-child(2){
+	width: 20%;
+}
+.yhxx>p:nth-child(3){
+	width: 20%;
+	text-align: right;
+	color: #FF0000;
+}
+.xxbtn{
+	padding: 0.1rem;
+	width: 2rem;
+	border-color: #8B80FE;
+	color: #8B80FE;
+}
+.xxbtn{
+	padding: 0.1rem;
+	width: 2rem;
+	border-color: #8B80FE;
+	color: #8B80FE;
+}
+.xxbtns{
+	padding:0.05rem 0.1rem;
+	width: 1.8rem;
+	border-color: #8B80FE;
+	color: #8B80FE;
+}
+.djstext{
+	color: #8B80FE;
+}
+.djstext>span{
+	vertical-align: top;
+}
+
+.ddxx{
+	width: 80%;
+    margin: 0 auto;
+}

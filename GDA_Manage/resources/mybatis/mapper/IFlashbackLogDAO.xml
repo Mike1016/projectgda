@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.flashbackLog.IFlashbackLogDAO">
+
+    <!--后台 分页 查询所有-->
+    <select id="queryFlashbackLoglistPage" resultType="pd" parameterType="page">
+        SELECT
+        tlt.*,pt.order_no as ptOrderNo,st.order_no as stOrderNo
+        FROM
+        tlashback_log_t tlt
+        LEFT JOIN platoon_t pt ON tlt.platoon_id = pt.id
+        LEFT JOIN sellout_t st ON tlt.sellout_id = st.id
+        <if test="pd.platoonOrderNo!= null and pd.platoonOrderNo != ''">
+            where pt.order_no like CONCAT('%', #{pd.platoonOrderNo}, '%')
+        </if>
+        order by tlt.create_time desc
+    </select>
+
+    <!--添加交易回溯日志日志-->
+    <insert id="saveFlashbackLog" parameterType="com.daka.entry.TlashbackLogVO">
+        INSERT INTO tlashback_log_t (
+            platoon_id,
+            sellout_id,
+            platoon_state,
+            sellout_state,
+            platoon_account,
+            sellout_account,
+            create_time
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.platoonId},
+            #{item.selloutId},
+            #{item.platoonState},
+            #{item.selloutState},
+            #{item.platoonAccount},
+            #{item.selloutAccount},
+            #{item.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <!--删除回溯日志-->
+    <delete id="delectFlashbackLogById" parameterType="java.lang.Integer">
+        delete from tlashback_log_t where id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>活动值</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/vitality.css" />
+</head>
+<body>
+<div class="content">
+	<header>
+		<div class="header">			
+			<span class="mui-icon mui-icon-arrowleft"  onclick="window.location.href='personal.html'"></span>
+			<p class="header_title">活动值</p>
+		</div>
+		<div class="life">
+			<p>活动值</p>
+			<p class="lifenumber">100</p>
+		</div>
+	</header>
+	
+		<div class="tittop"> 
+		<div class="flexrow between " >
+			<div  data-padid="#nav1" class=" active">转盘扣除</div>
+			<div  data-padid="#nav2">交易获取</div>
+		</div>
+		</div>
+		<div class="text">
+			<div id="nav1">
+			<!--卖财富值-->
+				<div class="title">
+					<div>活动值扣除</div>
+					<div>时间</div>
+				</div>
+				<div class="tit sell_text flexrow">
+					<!--<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>
+					<div>-1</div>
+					<div>2018-08-21 21:03:32</div>-->
+				</div>
+				<div class="jzgd">点击加载更多···</div>
+			</div>
+			<!--买财富值-->
+			<div id="nav2" style="width: 100%;">
+				<div class="tittesx">
+					<div>活动值获取</div>
+					<div>交易金额</div>
+					<div>时间</div>
+				</div>
+				<div class="hp sell_text flexrow" style="width: 100%;">
+					<!--<div class="tittesx">
+						<div>1</div>
+						<div>400</div>
+						<div>2018-08-21 21:03:32</div>
+					</div>
+					<div class="tittesx">
+						<div>1</div>
+						<div>400</div>
+						<div>2018-08-21 21:03:32</div>
+					</div>
+					<div class="tittesx">
+						<div>1</div>
+						<div>400</div>
+						<div>2018-08-21 21:03:32</div>
+					</div>-->
+				</div>
+				<div class="jzgd">点击加载更多···</div>
+			</div>
+			
+		</div> 	
+		
+	
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">	
+$("#nav1").css("display","block").siblings().css("display","none");
+ajax({
+	type: 'get',
+	url: '/app/customer/showPersonalInfo.do',
+	data: {
+		sessionId: sid
+	},
+	success: function(res) {
+		console.log(res);
+		if(res.status == 1) {
+			$('.lifenumber').text(res.data.activity); //活动值
+		} else {
+			mui.toast(res.msg);
+		}
+	}
+})
+var page = 1;
+var type = '#nav1';
+
+function int(){
+	var t = type.charAt(type.length-1);
+	ajax({
+		type: 'get',
+		url: '/app/activitylog/activityRecord.do',
+		data: {
+			sessionId: sid,
+			type:t,
+			page:page
+		},
+		success: function(res) {
+			console.log(res);
+			if(res.status == 1&&res.data.length>0) {
+				var h = '';
+				if(t == 1){	
+					$.each(res.data, function(k,v) {
+						h+=`
+							<div>${v.count}</div>
+					<div>${v.createTime}</div>
+						`;
+					});
+					$(type+'>.tit').append(h);
+				}else{
+					$.each(res.data, function(k,v) {
+						h+=`
+							<div class="tittesx">
+						<div>${v.count}</div>
+						<div>${v.account}</div>
+						<div>${v.createTime}</div>
+					</div>
+						`;
+					});
+					$(type+'>.hp').append(h);
+				}
+			} else {
+				$(type+'>.jzgd').hide();
+				mui.toast('无更多数据··');
+			}
+		}
+	})
+}
+int();
+$('.content').off('click').on('click','[data-padid]',function(){
+	page = 1;
+	$(this).addClass('active').siblings().removeClass('active');
+	var id = $(this).attr('data-padid');
+	console.log(id);
+	type = id;
+	int();
+	$(id).css("display","block").siblings().css("display","none");
+	
+});
+
+$('.jzgd').click(function(){
+	page++;
+	int();
+});</script>
+</html>

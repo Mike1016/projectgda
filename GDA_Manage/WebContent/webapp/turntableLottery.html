@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>活动中心</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/base.css" rel="stylesheet" />
+		<link href="css/layer.css" rel="stylesheet" />
+		<link href="css/turntableLottery.css" rel="stylesheet" />
+		<style type="text/css">
+			.layui-m-layercont h1 {
+			    top: 1.2rem;
+			    width: 2.8rem;
+			    margin-left: -1.4rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="content t">
+			<div class="yemianbiti bg phoneblock ">
+				<a class="fanhuiyige mui-icon mui-icon-back" href="index.html"></a>
+				活动中心
+			</div>
+			<div class="title pr">
+				<span class="mx" onclick="javascript:window.location.href='drawPrize.html'">明细>></span>
+				<div class="biaot">
+					<img src="img/dazhuanpan/xingyundazhuanpan.png" alt="" />
+				</div>
+				<!--九宫格-->
+				<main style="background: #7b07e5;">
+					<div class="flexrow jcsa dw">
+						<div onclick="javascript:window.location.href='turntableLottery.html'"><img src="img/dazhuanpan/11.png"/></div>
+						<div onclick="javascript:window.location.href='turntableLottery2.html'"><img src="img/dazhuanpan/02.png"/></div>
+						<div onclick="javascript:window.location.href='turntableLottery3.html'"><img src="img/dazhuanpan/03.png"/></div>
+					</div>
+	<div class="draw" id="lottery">
+		<table>
+			<tr>
+				<td class="item lottery-unit lottery-unit-0 ">
+					<div class="img">
+						<img src="img/dazhuanpan/img1.png" alt="">
+					</div>
+				</td>
+				<td class="gap"></td>
+				<td class="item lottery-unit lottery-unit-1">
+					<div class="img">
+						<img src="img/dazhuanpan/img2.png" alt="">
+					</div>
+				</td>
+				<td class="gap"></td>
+				<td class="item lottery-unit lottery-unit-2">
+					<div class="img">
+						<img src="img/dazhuanpan/img3.png" alt="">
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="gap-2" colspan="5"></td>
+			</tr>
+			<tr>
+				<td class="item lottery-unit lottery-unit-7">
+					<div class="img">
+						<img src="img/dazhuanpan/img8.png" alt="">
+					</div>
+				</td>
+				<td class="gap"></td>
+				<td class="">
+					<a class="draw-btn" href="javascript:"></a>
+				</td>
+				<td class="gap"></td>
+				<td class="item lottery-unit lottery-unit-3">
+					<div class="img">
+						<img src="img/dazhuanpan/img4.png" alt="">
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="gap-2" colspan="5"></td>
+			</tr>
+			<tr>
+				<td class="item lottery-unit lottery-unit-6">
+					<div class="img">
+						<img src="img/dazhuanpan/img7.png" alt="">
+					</div>
+				</td>
+				<td class="gap"></td>
+				<td class="item lottery-unit lottery-unit-5">
+					<div class="img">
+						<img src="img/dazhuanpan/img6.png" alt="">
+					</div>
+				</td>
+				<td class="gap"></td>
+				<td class="item lottery-unit lottery-unit-4">
+					<div class="img">
+						<img src="img/dazhuanpan/img5.png" alt="">
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<p style="padding: 0.3rem 0;text-align: center;">每次抽奖需消耗3个活动值</p>
+</main>
+				
+				<div class="hjmd pr">
+					<div class="jllist">
+						<!--<p>恭喜asdfasd获得10个生命力</p>
+						<p>恭喜asdfasd获得10个生命力</p>
+						<p>恭喜asdfasd获得10个生命力</p>
+						<p>恭喜asdfasd获得10个生命力</p>
+						<p>恭喜asdfasd获得10个生命力</p>
+						<p>恭喜asdfasd获得10个生命力</p>
+						<p>恭喜asdfasd获得10个生命力</p>
+						<p>恭喜asdfasd获得10个生命力</p>
+						<p>恭喜asdfasd获得10个生命力</p>
+						<p>恭喜asdfasd获得10个生命力</p>-->
+					</div>
+				</div>
+				<div class="gz">
+					<img src="img/dazhuanpan/choujiangguize.png" alt="" />
+				</div>
+				<div class="gzlist">
+					<p class="">
+						<span>1</span>
+						幸运大转盘 3档 每次抽奖需要消耗3个活动值
+					</p>
+					<p class="">
+						<span>2</span>
+						幸运大转盘 6档 每次抽奖需要消耗6个活动值
+					</p>
+					<p class="">
+						<span>3</span>
+						幸运大转盘 9档 每次抽奖需要消耗9个活动值
+					</p>
+				</div>
+				
+			</div>
+			
+		</div>
+
+		<script src="js/jquery.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/base.js"></script>
+		<script src="js/common.js"></script>
+		<script src="js/ajax.js"></script>
+		<script src="js/turntableLottery.js"></script>
+		<script src="js/layer.js"></script>
+		<script>
+			$(()=>{
+			ajax({
+				type:'get',
+				url:'/app/tray/turnTable.do',
+				data:{
+					sessionId:sid,
+					trayGrade:1
+				},
+				success:function(res){
+					console.log(res);
+					$.each(res.data, function(k,v) {
+						console.log($('.lottery-unit-'+v.trayNo+'>.img>img'));
+						$('.lottery-unit-'+v.trayNo+'>.img>img').attr('src',v.contextImg);
+					});
+				}
+			});
+			})
+			//获奖名单
+			function hjmd(){
+				$.getJSON(base+'/app/tray/awardRecord.do',{sessionId:sid},function(res){
+					console.log(res);
+					var h = '';
+					$.each(res.data, function(k,v) {
+						h+=`
+							<p>恭喜${v.userName}获得${v.prizes}</p>
+						`;
+						
+					});
+					$('.jllist').html(h);
+				})
+			}
+			hjmd()
+			setInterval('hjmd()',15000);
+		</script>
+<div id='info' style = "display : none">
+   <a href=""><img src="img/dazhuanpan/zhongjiang.png"></a>
+   <h1 class="jlzs"></h1>
+</div>
+	</body>
+
+</html>

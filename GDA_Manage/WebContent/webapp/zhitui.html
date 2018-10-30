@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>直推人数</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/today.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft back"></span>
+		<p class="header_title">直推人数</p>
+	</div>
+	
+
+	<div class="cont">		
+		<div class="title">
+			<div>账号</div>
+			<div>等级</div>
+			<div>状态</div>
+		</div>
+		
+		<!--<div class="title income">
+			<div>测试账号</div>
+			<div>M1</div>
+			<div data-name="adsfa" class="jhbtn"><span>激活</span></div>
+		</div>
+		<div class="title income">
+			<div>测试账号</div>
+			<div>M1</div>
+			<div>已激活</div>
+		</div>-->
+	</div>
+	
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type:'get',
+	url:'/app/customer/agentNum.do',
+	data:{
+		sessionId:sid
+	},
+	success:function(res){
+		console.log(res)
+		var html='';
+		if(res.data.length>0){
+		html+='<div class="title"><div>账号</div><div>等级</div><div>状态</div></div>';
+		$.each(res.data, function(k,v){
+			html+=`
+		<div class="title income">
+			<div>${v.userName}</div>
+			<div>${v.level}</div>
+			`;
+			if(v.state == 0){
+				html+=`
+						<div data-name="${v.userName}" data-id="${v.id}" class="jhbtn"><span>激活</span></div>
+					</div>
+				`;
+			}else if(v.state == 1){
+				html+=`
+						<div>已激活</div>
+					</div>
+				`;
+			}else{
+				html+=`
+						<div>封号</div>
+					</div>
+				`;
+			}
+		});
+        }else{
+            html+=`
+						<div class="wsj">暂无数据·····</div>
+					`;
+		}
+		$(".cont").html(html);
+	}
+})
+$('.content').on('tap','.jhbtn',function(){
+	var name = $(this).attr('data-name');
+	var id = $(this).attr('data-id');
+	var btnArray = ['是', '否'];
+	console.log(id);
+	mui.confirm('确认激活'+name, '激活下级', btnArray, function(e) {
+		if (e.index == 0) {
+			ajax({
+				type:"post",
+				url:"/app/activationLog/activationState.do",
+				data:{
+					sessionId:sid,
+					id:id
+					},
+				success:function(res){
+					if(res.status == 1){
+						location.reload();
+					}else{
+						mui.toast(res.msg);
+					}
+				}
+			});
+		} else {
+			
+		}
+	})
+})
+
+</script>
+</html>

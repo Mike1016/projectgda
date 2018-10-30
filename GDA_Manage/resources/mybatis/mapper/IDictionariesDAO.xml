@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.dictionaries.IDictionariesDAO">
+	<!--后台 分页 查询所有 -->
+	<select id="queryDictionarieslistPage" resultType="pd"
+		parameterType="page">
+		select * from dictionaries_t
+		<if test="pd.type!= null and pd.type != ''">
+			where type like CONCAT('%', #{pd.type}, '%')
+		</if>
+	</select>
+
+	<!--修改 -->
+	<update id="updateDictionaries"
+		parameterType="com.daka.entry.DictionariesVO">
+		update dictionaries_t
+		<trim prefix="set" suffixOverrides=",">
+			<if test="parameter != null and parameter != ''">
+				parameter=#{parameter},
+			</if>
+			<if test="remarks != null and remarks != ''">
+				remarks=#{remarks},
+			</if>
+		</trim>
+		where 1 = 1
+		<if test="id != null">
+            and id=#{id}
+		</if>
+		<if test="type != null and type !=''">
+			and type = #{type}
+		</if>
+	</update>
+
+	<!--根据id查询 -->
+	<select id="queryById"
+		resultType="com.daka.entry.DictionariesVO" parameterType="String">
+		select * from
+		dictionaries_t where id = #{id}
+	</select>
+
+	<sql id="result">
+		id, type, parameter, remarks
+	</sql>
+
+	<!-- 根据类型查询字典对象 -->
+	<select id="selectParameter"  resultType="com.daka.entry.DictionariesVO">
+		select
+		<include refid="result"></include>
+		from dictionaries_t where type = #{type}
+	</select>
+
+	<select id="queryAll" resultType="com.daka.entry.DictionariesVO">
+		select * from dictionaries_t
+	</select>
+
+	<insert id="saveDictionaries" parameterType="com.daka.entry.DictionariesVO">
+		insert into dictionaries_t(id,type, parameter, remarks) values(#{id},#{type},#{parameter},#{remarks})
+	</insert>
+
+	<select id="queryAboutUs" resultType="java.lang.String">
+		select remarks from dictionaries_t where type = 'ABOUT_US'
+	</select>
+</mapper>

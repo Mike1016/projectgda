@@ -1,0 +1,47 @@
+.headers{
+	position: fixed;
+	z-index: 9;
+}
+.cont{
+	position: relative;
+	top:1rem;
+	margin-top: 0.24rem;
+	height: auto;
+	background: #fff;
+}
+.cont div{
+	height: 1.2rem;
+	line-height: 1.2rem;
+	border-bottom: 1px solid #f2f2f2;
+	margin: 0 auto;
+}
+.cont:last-child div{
+	/*margin-bottom: 0.24rem;*/
+}
+.title div{
+	color: #333;
+	font-size:0.32rem ;
+}
+.text{
+	font-size: 0.3rem;
+	color: #666;
+}
+.text div{
+	float: left;
+	text-align: center;
+}
+.text div:nth-child(1){
+	width: 20%;
+}
+.text div:nth-child(2){
+	width: 35%;
+}
+.text div:nth-child(3){
+	width: 10%;
+}
+.text div:nth-child(4){
+	width: 35%;
+}
+.cont_text>div{
+	font-size: 0.25rem;
+}

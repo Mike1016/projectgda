@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>收款方信息</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/payerInformation.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft " onclick="window.location.href='buypayment.html'"></span>
+		<p class="header_title">收款方信息</p>
+	</div>
+	<div></div>
+	<div class="cont grxx">
+		
+	</div>
+	<div class="cont yhkxx">
+		
+	</div>
+	<div class="pr">
+		<button class="tijiaobtn">上传图片</button>
+		<form action="" name="form" id="form" enctype="multipart/form-data" method="post">
+			<input type="file" id="sfzzm" name="paymentImg" onchange="changepic(this)" value="" accept="image/png,image/jpg,image/gif" />
+		</form>	
+	</div>
+	<div>
+		<img src="" style="width: 80%; margin: 0 10%;" class="zfpz"/>
+	</div>
+</div>		
+	
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+var mrid = localStorage['mrddid'];
+$(()=>{
+		ajax({
+			type:"get",  
+			url:"/app/platoon/showOtherInfo.do",
+			data:{
+				sessionId:sid,
+				id:mrid
+			},
+			success:function(res){
+			    console.log(res);
+				if(res.status == 1){
+					var v = res.data.customerVO, h='';
+					$('.grxx').html(`
+		<div>
+			用户名：${v.userName}
+		</div>
+		<div>
+			手机号：${v.phone}
+		</div>
+		<div>
+			微信账号：${v.weChat}
+		</div>
+		<div>
+			支付宝账号：${v.alipay}
+		</div>
+					`);
+					$.each(res.data.bankList, function(k,v) {
+						h+=`
+		<div class="flexrow jcsb">
+			<div>${v.bankName}：${v.cardNumber}</div>
+			<div>持卡人 ： ${v.cardHolder}</div>
+		</div>
+						`;
+					});
+					$('.yhkxx').html(h);
+		if(res.data.img){
+			$('.pr').hide();
+			$('.zfpz').attr('src',base+res.data.img);
+		}
+				}else{
+					mui.toast(res.msg);
+				}
+			}
+		});
+	});
+function changepic() {
+	var formData = new FormData($('#form')[0]);
+		formData.append("sessionId",sid);
+		formData.append("id",mrid);
+		$.ajax({
+		    type: 'post',
+		    url: base+"/app/platoon/upLoadImg.do",
+		    data: formData,
+		    cache: false,
+		    processData: false,
+		    contentType: false,
+		    success:function(res){  
+		    	console.log(res);
+		    	if(res.status == 1){
+			        mui.toast(res.msg);
+					setTimeout(function(){				
+						location.reload();
+				},1000);
+				}else{
+					mui.toast(res.msg);
+				}
+		    }
+		});
+	
+	};
+
+</script>
+</body>
+</html>

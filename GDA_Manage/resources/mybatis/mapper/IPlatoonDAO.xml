@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.platoon.IPlatoonDAO">
+
+    <!--查询所有数据-->
+	<select id="queryPlatoonVO" resultType="com.daka.entry.PlatoonVO" >
+		select id,customer_id,order_no,account,create_time,match_time,payment_time,confirm_time,state,status from platoon_t
+	</select>
+
+	<!--获取用户周期内的订单-->
+	<select id="selectCyclePlatoon" resultType="com.daka.entry.PlatoonVO">
+		select * from platoon_t
+        where customer_id = #{customerId}
+        and create_time > date_sub(now(), interval #{day} day)
+        order by create_time desc
+	</select>
+
+	<!-- 根据订单号查询 -->
+	<select id="selectPlatoonVOByOrderNo" resultType="com.daka.entry.PlatoonVO" parameterType="java.lang.String">
+		select * from platoon_t where order_no = #{orderNo}
+	</select>
+
+    <!-- 添加 -->
+    <insert id="savePlatoon" parameterType="com.daka.entry.PlatoonVO" useGeneratedKeys="true" keyProperty="id">
+		insert into platoon_t(
+			customer_id, order_no, account, create_time, state, status
+		)values(
+			#{customerId, jdbcType=INTEGER}, #{orderNo, jdbcType=VARCHAR},
+			#{account, jdbcType=DECIMAL}, now(), #{state, jdbcType=INTEGER},
+			#{status, jdbcType=INTEGER}
+		)
+	</insert>
+
+	 <!-- 根据用户ID和state查询 -->
+    <select id="showPlatoonOrder" parameterType="java.util.Map" resultType="com.daka.entry.PlatoonVO">
+        select * from platoon_t where customer_id = #{customerId} and state = #{state}
+    </select>
+    <!-- 根据用户ID和state查询 -->
+    <select id="completed" parameterType="java.util.Map" resultType="com.daka.entry.PlatoonVO">
+        select order_no,account,create_time,match_time,payment_time,confirm_time,state,status from platoon_t where customer_id = #{customerId} and state = #{state}
+    </select>
+
+    <!-- 根据订单ID查询订单 -->
+    <select id="queryPlatoonById" parameterType="java.lang.Integer" resultType="com.daka.entry.PlatoonVO">
+        select * from platoon_t where id = #{id}
+    </select>
+
+    <!-- 修改 -->
+	<update id="updatePlatoonVO" parameterType="com.daka.entry.PlatoonVO">
+		update platoon_t
+		<trim prefix="set" suffixOverrides=",">
+			<if test="orderNo!= null and orderNo != ''">order_no=#{orderNo},</if>
+			<if test="customerId != null and customerId != ''">customer_id=#{customerId},</if>
+			<if test="account != null and account != ''">account=#{account},</if>
+			<if test="paymentTime != null and paymentTime != ''">payment_time=#{paymentTime},</if>
+			<if test="createTime != null and createTime != ''">create_time=#{createTime},</if>
+			<if test="state != null">state=#{state},</if>
+			<if test="confirmTime != null and confirmTime != ''">confirm_time=#{confirmTime},</if>
+			<if test="matchTime != null and matchTime != ''">match_time=#{matchTime},</if>
+			<if test="status != null">status=#{status},</if>
+		</trim>
+		where id=#{id}
+	</update>
+    <!--后台 分页 查询所有-->
+    <select id="queryPlatoonlistPage" resultType="pd" parameterType="page">
+        select pt.* , ct.user_name as userName,
+        pt.account-(select IFNULL(SUM(st.account),0) from sellout_t st where st.platoon_id = pt.id) as surplusAccount
+        from platoon_t pt , customer_t ct
+        where pt.customer_id = ct.id
+        <if test="pd.orderNo!= null and pd.orderNo != ''">
+            and order_no like CONCAT('%', #{pd.orderNo}, '%')
+        </if>
+        order by pt.create_time desc
+    </select>
+
+    <!--修改订单状态-->
+    <update id="updatePlatoonState" parameterType="com.daka.entry.PlatoonVO">
+        UPDATE platoon_t
+        <trim prefix="set" suffixOverrides=",">
+            <if test="state != null">state=#{state},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="matchTime != null and matchTime != ''">match_time=#{matchTime},</if>
+            <if test="confirmTime != null and confirmTime != ''">confirm_time=#{confirmTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    
+    <!-- 根据用户信息查询排单信息-->
+	<select id="getPlatoonByCustomerId" resultType="com.daka.entry.PlatoonVO" >
+		select id, order_no, customer_id, account, create_time, match_time, payment_time, confirm_time, state, status from platoon_t where customer_id = #{id} order by confirm_time desc	
+	</select>
+
+	<!-- 根据排单id查询排单信息-->
+	<select id="getPlatoonInfoById" resultType="com.daka.entry.PlatoonVO" >
+		select order_no, customer_id, account, create_time, match_time, payment_time, confirm_time, state, status from platoon_t where id = #{platoonId}		
+	</select>	
+
+    <!--BigDecimal querySumAccountByCustomerId(Integer customerId) throws  Exception;-->
+    <select id="querySumAccountByCustomerId" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select IFNULL(SUM(account),0) from platoon_t where customer_id=#{customerId} and status=1
+    </select>
+
+    <!--查询排单的用户电话-->
+    <select id="queryPlatoonCustomer" parameterType="java.lang.Integer" resultType="com.daka.entry.dto.PlatoonDTO">
+        SELECT
+            pt.*,
+            ct.user_name AS userName,
+            ct.phone AS phone
+        FROM
+            platoon_t pt
+        LEFT JOIN customer_t ct ON pt.customer_id = ct.id
+        where pt.id = #{id}
+    </select>
+    
+    <!-- 根据用户id查询排单总金额 -->
+    <select id="getPlatoonSum" resultType="java.math.BigDecimal">
+    	select IFNULL(SUM(account),0) AS platoonAccount from platoon_t where customer_id = #{id} and state = 3
+    </select>
+
+    <!--查询未失效的订单-->
+    <select id="queryUnexpiredOrder" resultType="com.daka.entry.PlatoonVO" parameterType="java.lang.Integer">
+        select * from platoon_t where state in(0,1,2,3) and status in(0,1) and customer_id = #{customerId}
+    </select>
+
+    <!-- 后台封号之后 批量修改（让订单失效） -->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update platoon_t state = 4
+            where 1=1
+            <if test="item.id !=null">and id=#{item.id}</if>
+        </foreach>
+    </update>
+
+    <!--是否存在排单-->
+    <select id="selectPlatoonOnlyByCustomerId" parameterType="int" resultType="com.daka.entry.PlatoonVO">
+        select * from platoon_t where state in(0, 1, 2) and customer_id = #{customerId}
+    </select>
+
+    <select id="showOtherBasicInfo" resultType="com.daka.entry.CustomerVO" parameterType="java.lang.Integer">
+        SELECT * FROM customer_t WHERE id = (SELECT t1.customer_id FROM sellout_t t1 WHERE id =#{id} )
+    </select>
+
+    <select id="showOtherBankInfo" resultType="com.daka.entry.BankVO" parameterType="java.lang.Integer">
+        SELECT * FROM bank_t WHERE customer_id = (SELECT t1.customer_id FROM sellout_t t1 WHERE id =#{id} )
+    </select>
+
+    <!-- 根据用户id查询买入财富值DTO信息 -->
+    <select id="getSelloutDtoByPlatoonId" resultType="com.daka.entry.dto.PlatoonDTO" parameterType="java.lang.Integer">
+		select p.*,c.user_name from sellout_t as s ,platoon_t as p , customer_t as c 
+		where s.platoon_id = p.id and p.customer_id = c.id and s.type=1 and s.state=4 
+		and p.state=3  and s.customer_id = #{id} order by s.confirm_time desc    
+	</select>
+	
+		<!-- 根据排单id查询奖金DTO信息 -->
+    <select id="getSelloutDtoBonusInfo" resultType="com.daka.entry.dto.PlatoonDTO" parameterType="java.lang.Integer">
+		select p.*,c.user_name from sellout_t as s ,platoon_t as p , customer_t as c 
+		where s.platoon_id = p.id and p.customer_id = c.id and s.type=2 and s.state=4 
+		and p.state=3  and s.customer_id = #{id} order by s.confirm_time desc    
+	</select>
+</mapper>

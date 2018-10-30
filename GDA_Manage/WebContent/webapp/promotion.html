@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>推广</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/base.css" rel="stylesheet" />
+		<style type="text/css">
+			.ewm{
+				width: 50%;position: absolute;top: 35%;left: 25%;
+			}
+			@media only screen and (min-height: 810px) and (max-height: 813px) {
+				.ewm{
+					width: 50%;position: absolute;bottom: 36%;left: 25%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="example" class="content pr" style="background-image: url(img/tuiguang/zhuce.jpg);background-size:100% 100% ;">
+			<div class="ewm" >
+				<div id="qrcode"></div>
+			</div>
+		</div>
+	
+		<script src="js/jquery.min.js"></script>
+		<script src="js/ajax.js"></script>
+		<script src="js/qrcode.js"></script>
+		<script src="js/mui.min.js"></script>
+
+		<script>
+		var sessionId = localStorage['sessionId'];
+		var tgm ='',urls='http://154.222.142.152/GCR_Manage/webapp/promotionRegistration.html';
+		/*ajax({
+			type:"get",
+			url:"/app/customer/memberCenter.do",
+			data:{
+				sessionId:sessionId
+			},
+			async:true,
+			success:function(res){
+				tgm = res.data.phone;
+				var sj =urls+"?"+tgm;
+				makeCode(sj);
+			}
+		});*/
+		
+		var qrcode = new QRCode(document.getElementById("qrcode"), {
+			width : 100,
+			height : 100
+		});
+		function makeCode (data) {		
+			//console.log(data);
+			qrcode.makeCode(data);
+		}
+		makeCode(urls);
+
+		</script>
+	</body>
+
+</html>

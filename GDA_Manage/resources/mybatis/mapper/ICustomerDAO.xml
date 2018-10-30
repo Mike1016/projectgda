@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.customer.ICustomerDAO">
+    <sql id="result">
+		id as id, agent_id as agentId, user_name as userName, level as level, head_img as headImg, city as city, we_chat as weChat, alipay as alipay, identity_card as identityCard, phone as phone, extension_code as entensionCode, password as password,
+		security_password as securityPassword, activation_number as activationNumber, wealth as wealth, bonus as bonus, vitality as vitality, activity as activity, regester_time as regesterTime, address as address, state as state, real_name as realName
+	</sql>
+    
+    <!--后台 分页 查询所有-->
+    <select id="queryCustomerlistPage" resultType="pd" parameterType="page">
+        select * from customer_t
+        <if test="pd.phone!= null and pd.phone != ''">
+            where phone like CONCAT('%', #{pd.phone}, '%')
+        </if>
+        order by regester_time desc
+    </select>
+
+    <update id="updateMessage" parameterType="com.daka.entry.CustomerVO">
+        update customer_t
+        <trim prefix="set" suffixOverrides=",">
+            <if test="agentId != null and agentId != ''">
+                agent_id=#{agentId},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name=#{userName},
+            </if>
+            <if test="realName != null and realName != ''">
+                real_name=#{realName},
+            </if>
+            <if test="level != null and level != ''">
+                level=#{level},
+            </if>
+            <if test="headImg != null and headImg != ''">
+                head_img=#{headImg},
+            </if>
+            <if test="alipay != null and alipay != ''">
+                alipay=#{alipay},
+            </if>
+            <if test="city != null and city != ''">
+                city=#{city},
+            </if>
+            <if test="weChat != null and weChat != ''">
+                we_chat=#{weChat},
+            </if>
+            <if test="identityCard != null and identityCard != ''">
+                identity_card=#{identityCard},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone=#{phone},
+            </if>
+            <if test="extensionCode != null and extensionCode != ''">
+                extension_code=#{extensionCode},
+            </if>
+            <if test="password != null and password != ''">
+                password=#{password},
+            </if>
+            <if test="securityPassword != null and securityPassword != ''">
+                security_password=#{securityPassword},
+            </if>
+            <if test="activationNumber != null">
+                activation_number=#{activationNumber},
+            </if>
+            <if test="wealth != null and wealth != ''">
+                wealth=#{wealth},
+            </if>
+            <if test="bonus != null and bonus != ''">
+                bonus=#{bonus},
+            </if>
+            <if test="vitality != null and vitality != ''">
+                vitality=#{vitality},
+            </if>
+            <if test="activity != null and activity != ''">
+                activity=#{activity},
+            </if>
+            <if test="regesterTime != null and regesterTime != ''" >
+                regester_time=#{regesterTime},
+            </if>
+            <if test="address != null and address != ''">
+                address=#{address},
+            </if>
+            <if test="state != null">
+                state=#{state},
+            </if>
+            <if test="userType != null">
+                user_type=#{userType},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <select id="queryCustomerById" parameterType="java.lang.Integer" resultType="com.daka.entry.CustomerVO">
+        select * from customer_t where id = #{id}
+    </select>
+
+    <!-- 每日减少相应等级的激活用户的生命力 -->
+    <update id="updateDaliyLife" parameterType="java.util.Map">
+    	update customer_t set vitality=CASE level
+    	when 'M1' then (vitality-#{vitality1})
+    	when 'M2' then (vitality-#{vitality2})
+    	when 'M3' then (vitality-#{vitality3})
+    	when 'M4' then (vitality-#{vitality4})
+    	when 'M5' then (vitality-#{vitality5})
+    	when 'M6' then (vitality-#{vitality6})
+    	when 'M7' then (vitality-#{vitality7})
+    	when 'M8' then (vitality-#{vitality8})
+    	when 'M9' then (vitality-#{vitality9})
+    	when 'M10' then (vitality-#{vitality10})
+    	end
+    	where level in('M1','M2','M3','M4','M5','M6','M7','M8','M9','M10')
+    	and state=1 
+    	and vitality<![CDATA[ > ]]>0
+    </update>
+
+    <!-- 生命值低于0的修改为0 -->
+    <update id="updateVitalityLower">
+    	update customer_t set vitality=0 where vitality <![CDATA[ < ]]> 0
+    </update>
+
+    <!-- 生命值高于100的修改为100 -->
+    <update id="updateVitalityUpper">
+    	update customer_t set vitality=100 where vitality <![CDATA[ > ]]> 100
+    </update>
+
+    <!--后台 删除-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+		delete from customer_t where id=#{id};
+	</delete>
+
+    <!--后台 添加-->
+    <insert id="saveCustomer" parameterType="com.daka.entry.CustomerVO">
+        insert into customer_t
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null and userName !=''">
+                user_name,
+            </if>
+            <if test="level != null and level !=''">
+                level,
+            </if>
+            <if test="city != null and city !=''">
+                city,
+            </if>
+            <if test="weChat != null and weChat !=''">
+                we_chat,
+            </if>
+            <if test="alipay != null and alipay !=''">
+                alipay,
+            </if>
+            <if test="identityCard != null and identityCard !=''">
+                identity_card,
+            </if>
+            <if test="phone != null and phone !=''">
+                phone,
+            </if>
+            <if test="password != null and password !=''">
+                password,
+            </if>
+            <if test="extensionCode != null and extensionCode !=''">
+                extension_code,
+            </if>
+            <if test="activationNumber != null">
+                activation_number,
+            </if>
+            <if test="wealth != null">
+                wealth,
+            </if>
+            <if test="bonus != null">
+                bonus,
+            </if>
+            <if test="activity != null">
+                activity,
+            </if>
+            <if test="regesterTime != null and regesterTime !=''">
+                regester_time,
+            </if>
+            <if test="address != null and address !=''">
+                address,
+            </if>
+            <if test="userType != null">
+                user_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null and userName !=''">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null and level !=''">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null and city !=''">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="weChat != null and weChat !=''">
+                #{weChat,jdbcType=VARCHAR},
+            </if>
+            <if test="alipay != null and alipay !=''">
+                #{alipay,jdbcType=VARCHAR},
+            </if>
+            <if test="identityCard != null and identityCard !=''">
+                #{identityCard,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone !=''">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password !=''">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="extensionCode != null and extensionCode !=''">
+                #{extensionCode,jdbcType=VARCHAR},
+            </if>
+            <if test="activationNumber != null">
+                #{activationNumber,jdbcType=INTEGER},
+            </if>
+            <if test="wealth != null">
+                #{wealth,jdbcType=DOUBLE},
+            </if>
+            <if test="bonus != null">
+                #{bonus,jdbcType=DOUBLE},
+            </if>
+            <if test="activity != null">
+                #{activity,jdbcType=INTEGER},
+            </if>
+            <if test="regesterTime != null and regesterTime !=''">
+                #{regesterTime,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null and address !=''">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="userType != null">
+                #{userType,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!--根据id查询-->
+    <select id="queryById" resultType="com.daka.entry.CustomerVO" parameterType="java.lang.Integer">
+        select * from customer_t where id = #{id}
+    </select>
+
+    <!--批量修改激活数/生命力-->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update customer_t
+            <set>
+                <if test="item.activationNumber != null and item.activationNumber != ''">
+                    activation_number=#{item.activationNumber},
+                </if>
+                <if test="item.vitality != null and item.vitality != ''">
+                    vitality=#{item.vitality},
+                </if>
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <!--不满足 条件查询所有用户-->
+    <select id="queryAll" resultType="com.daka.entry.CustomerVO" parameterType="com.daka.entry.CustomerVO">
+        select id,activation_number as activationNumber ,vitality from customer_t
+        WHERE 1=1 and state = 1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+    </select>
+    
+    <!-- 根据手机号查询用户个数 -->
+	<select id="getUserNameCount" resultType="java.lang.Integer">
+		SELECT COUNT(USER_NAME) FROM CUSTOMER_T WHERE phone=#{phone}  	
+	</select>
+	
+	<!-- 登录 -->
+	<select id="login" parameterType="com.daka.entry.CustomerVO" resultType="com.daka.entry.CustomerVO">
+		SELECT <include refid="result"></include> FROM CUSTOMER_T 
+		<where>
+		    <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+		    <if test="password != null and password != ''"> and password = #{password} </if>
+		</where>			
+	</select>
+	
+	<!--根据二维码查询父id信息  -->
+	<select id="getExtensionCodInfo"  resultType="com.daka.entry.CustomerVO">
+		SELECT <include refid="result"></include> FROM CUSTOMER_T where extension_code=#{extensionCode} 		
+	</select>
+	
+	<!--根据用户名查询信息  -->
+	<select id="checkUserNameInfo" resultType="com.daka.entry.CustomerVO">
+		SELECT <include refid="result"></include> FROM CUSTOMER_T where user_name = #{userName} 		
+	</select>
+	
+	<!-- 注册 -->
+	<insert id="saveRegister" parameterType="com.daka.entry.CustomerVO" useGeneratedKeys="true" keyProperty="id">
+       <!-- <selectKey keyProperty="userId" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>-->
+		insert into customer_t(
+			agent_id, user_name, level, phone, extension_code, password, regester_time
+		) values (
+			#{agentId}, #{userName}, #{level}, #{phone}, #{extensionCode}, #{password}, #{regesterTime}
+		)
+	</insert>
+	
+	<!-- 查询id总数 -->
+	<select id="selectIdCount" resultType="java.lang.Integer">
+		SELECT COUNT(id) FROM CUSTOMER_T WHERE DATE_FORMAT(regester_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+	</select>
+	
+	<select id="queryAllCustomerWithRelation" resultType="map">
+		select id as id ,agent_id as pId from CUSTOMER_T order by agent_id
+	</select>
+
+    <!--更新用户每日利息财富值-->
+    <update id="updateCustomerWealth">
+        UPDATE customer_t
+        SET wealth = wealth + wealth * ( SELECT parameter FROM dictionaries_t WHERE type = concat( 'BONUS_', `level` ) )
+        WHERE
+            state = 1 and wealth  <![CDATA[ > ]]> 0
+    </update>
+
+    <!--获取直推人数-->
+    <select id="selectPushCount" parameterType="integer" resultType="int">
+        select count(1) from customer_t where agent_id = #{customer_id} and state = 1
+    </select>
+
+    <!--获取有效的团队-->
+    <select id="selectEffectiveTeamList" parameterType="string" resultType="com.daka.entry.CustomerVO">
+        select * from customer_t where state = 1 ${ids}
+    </select>
+    
+	<!--根据id查询对象信息  -->
+	<select id="getCustomerById" resultType="com.daka.entry.CustomerVO">
+		SELECT <include refid="result"></include> FROM CUSTOMER_T where id = #{customerId} 		
+	</select>
+	
+	<!-- 根据用户id查询所有向上父id信息 -->
+	<select id="selectAgentIdListById" resultType="java.lang.String" parameterType="java.lang.Integer">
+		select getParentList(#{id})
+	</select>
+	
+	<!--根据id查询推荐用户信息-->
+    <select id="selectAgentIdList" parameterType="java.lang.Integer" resultType="com.daka.entry.CustomerVO">
+        select * from customer_t where agent_id = #{id} order by regester_time desc
+    </select>
+
+    <select id="queryLevelByAgentId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT level FROM customer_t WHERE agent_id = #{agentId} and state in(0,1)
+    </select>
+
+    <!--根据父id查询直推人数-->
+    <select id="getCustomerCountByAgentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select * from customer_t where agent_id = #{agentId}
+    </select>
+
+    <!--获取树形父级成员的最近一单金额-->
+    <select id="selectLastAccountList" resultType="com.daka.entry.dto.CustomerDTO">
+        SELECT
+            b.id,
+            b.agent_id,
+            b.level,
+            a.account
+        FROM
+            customer_t b
+            left join platoon_t a on a.customer_id = b.id
+            left join ( SELECT customer_id, max( create_time ) AS create_time FROM platoon_t
+            WHERE state = 3 AND `status` = 2 ${ids}
+            GROUP BY customer_id ) t on t.customer_id = b.id and a.create_time = t.create_time
+        WHERE b.state = 1 ${idList}
+    </select>
+
+    <!--根据排单ID封号-->
+    <update id="updateCustomerStateByPlatoonId">
+        update customer_t a set a.state = 2 where exists (select 1 from sellout_t b where b.platoon_id = #{platoonId} and b.customer_id = a.id)
+    </update>
+
+    <!--根据ID更新财富值-->
+    <update id="updateCustomerWealthById">
+        update customer_t set wealth = wealth + #{wealth} where id = #{id}
+    </update>
+</mapper>

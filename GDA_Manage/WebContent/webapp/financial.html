@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>财务中心</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/financial.css" />
+</head>
+<body>
+<div class="content">
+	<header>
+		<div class="header pr">			
+			<span class="mui-icon mui-icon-arrowleft back1"></span>
+			<p>财务中心</p>
+		</div>
+		<div class="conten">
+			<div class="top">				
+				<p>总资产</p>
+				<p><span class="totalAssets"></span></p>
+			</div>
+			<div style="position: absolute;top: 3rem; width: 100%;">
+			<div class="flexrow jcsa between title" style="background-color: #8B80FE;">
+				<div>
+					<p><span>财富背包</span>  <span  class="buycount">0</span> </p>
+				</div>
+				<div>
+					<p><span>奖金背包</span>  <span  class="buywealth">0</span> </p>
+				</div>
+				
+			</div>
+			</div>
+		</div>
+	</header>
+	
+	
+	<div class="cont flexrow between">
+		<div onclick="javascript:window.location.href='buy.html'">
+			<img src="img/index/mairu.png" alt="" />
+			<p>买入财富记录</p>
+		</div>
+		<div onclick="javascript:window.location.href='sell.html'">
+			<img src="img/index/maichu.png" alt="" />
+			<p>卖出财富记录</p>
+		</div>
+	</div>
+	
+	<div class="text">
+		<div class="text_title">			
+			<div class="l"></div><span>收益专区</span>
+		</div>
+		
+		<div class="detail">			
+			<div class="flexrow jcsb between">
+				<div>买入财富总数</div>
+				<div class="mrzs">12000</div>
+			</div>
+			<div class="flexrow jcsb between">
+				<div>卖出财富总数</div>
+				<div class="mczs">1000</div>
+			</div>
+			<div class="flexrow jcsb between" onclick="window.location.href='dailyInterest.html'">
+				<div>日利息</div>
+				<div class="mui-icon mui-icon-forward"></div>
+			</div>
+			<div class="flexrow jcsb between" onclick="window.location.href='lotteryWealth.html'">
+				<div>抽奖所获财富</div>
+				<div class="mui-icon mui-icon-forward"></div>
+			</div>
+			<div class="flexrow jcsb between" onclick="window.location.href='knapsackBonus.html'">
+				<div>推荐奖励</div>
+				<div class="mui-icon mui-icon-forward"></div>
+			</div>
+			<div class="flexrow jcsb between" onclick="window.location.href='sellRewards.html'">
+				<div>卖出奖励</div>
+				<div class="mui-icon mui-icon-forward"></div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type: 'get',
+	url: '/app/customer/financialCenter.do',
+	data: {
+		sessionId: sid
+	},
+	success: function(res) {
+		console.log(res);
+		if(res.status == 1) {
+			var v = res.data;
+			var he = v.wealth+v.bonus;
+			console.log(he);
+			$('.totalAssets').html(he); //总资产
+			$('.buycount').text(v.wealth.toFixed(0)); //财富背包
+			$('.buywealth').text(v.bonus.toFixed(0)); //奖金背包
+			$('.mrzs').text(v.platoonAccount); //	买入总数
+			$('.mczs').text(v.selloutAccount); //卖出总数
+			
+		} else {
+			mui.toast(res.msg);
+		}
+	}
+})
+</script>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>买入财富</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/wealth.css" />   
+</head>
+<body>
+<div class="content">
+	<header>
+		<div class="header">			
+			<span class="mui-icon mui-icon-arrowleft back"></span>
+			<p class="header_title">买入财富</p>
+		</div>
+		<div class="flexrow between text">
+			<div>
+				<p>财富背包</p>
+				<p class="buycount"></p>
+			</div>
+			<div>
+				<p>奖金背包</p>
+				<p class="buywealth"></p>
+			</div>
+		</div>
+	</header>	
+	
+	<div class="cont">
+		<div class="wealtn_money">
+			<p>财富值</p>
+			<input class="cfz" type="number" min="2000" placeholder="2000起买(500的倍数)"  />
+		</div>
+		<div class="wealtn_money">
+			<p>输入安全密码</p>
+			<input class="aqmm" type="password" placeholder="请输入安全密码"/>
+		</div>
+	</div>
+	
+	<button type="button" class="tijiaobtn">提交</button>
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type: 'get',
+	url: '/app/customer/showPersonalInfo.do',
+	data: {
+		sessionId: sid
+	},
+	success: function(res) {
+		console.log(res);
+		if(res.status == 1) {
+			var v = res.data;
+			//$('.uname').text(v.userName); //用户名
+			//$('.level').attr('src', 'img/index/M' + v.level + '.png'); //等级
+			//$('.totalAssets').text(v.wealth+v.bonus); //总资产
+			$('.buycount').text(v.wealth); //财富背包
+			$('.buywealth').text(v.bonus); //奖金背包
+		} else {
+			mui.toast(res.msg);
+		}
+	}
+})
+$('.cfz').blur(function(){
+	var cfz = $(this);
+	var beishu = 500;
+	var account = cfz.val();
+	if(account < 2000){
+		cfz.val('2000');
+		mui.toast('财富值2000起卖！');
+		return;
+	}
+	//console.log(account%beishu);
+	if(account%beishu != 0){
+		var sj = (Math.ceil(account/beishu))*beishu;
+			//console.log(sj);
+		cfz.val(sj);
+		mui.toast('财富值必须是500的倍数！');
+		return;
+	}
+});
+	
+$('.tijiaobtn').click(function(){
+	var account = $('.cfz').val(),
+		securityPassword = $('.aqmm').val();
+	
+	var data = {
+		sessionId:sid,
+		account:account,
+		securityPassword:securityPassword
+	};
+	console.log(data);
+	ajax({
+		type:'post',
+		url:'/app/platoon/saveWealth.do',
+		data:data,
+		success:function(res){
+			console.log(res)
+			if(res.status == 1){
+				mui.toast(res.msg);
+				location.reload();
+			} else { 
+				mui.toast(res.msg);
+			}
+		}
+	});
+});
+</script>
+</html>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.sellout.ISelloutDAO">
+    <!--后台 分页 查询所有-->
+    <select id="querySelloutlistPage" resultType="pd" parameterType="page">
+        SELECT
+        st.*, ct.user_name AS userName,pt.order_no AS platoonOrderNo
+        FROM
+        sellout_t st
+        LEFT JOIN customer_t ct ON st.customer_id = ct.id
+        LEFT JOIN platoon_t pt ON st.platoon_id = pt.id
+        where 1=1
+        <if test="pd.state != null">
+            and state = #{pd.state} and platoon_id is null
+        </if>
+        <if test="pd.orderNo!= null and pd.orderNo != ''">
+             and st.order_no like CONCAT('%', #{pd.orderNo}, '%')
+        </if>
+        order by st.create_time desc
+    </select>
+
+    <!--void saveSellout(SelloutVO selloutVO) throws Exception; //卖出订单-->
+    <insert id="saveSellout" parameterType="com.daka.entry.SelloutVO">
+        insert into sellout_t
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="customerId != null">
+                customer_id,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="platoonId != null">
+                platoon_id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="matchTime != null">
+                match_time,
+            </if>
+            <if test="collectionTime != null">
+                collection_time,
+            </if>
+            <if test="confirmTime != null">
+                confirm_time,
+            </if>
+            <if test="paymentImg != null">
+                payment_img,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="customerId != null">
+                #{customerId,jdbcType=INTEGER},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="platoonId != null">
+                #{platoonId,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="matchTime != null">
+                #{matchTime,jdbcType=VARCHAR},
+            </if>
+            <if test="collectionTime != null">
+                #{collectionTime,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmTime != null">
+                #{confirmTime,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentImg != null">
+                #{paymentImg,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!--List<SelloutVO> showSelloutOrder(Integer customerId) throws Exception; //根据用户id查询卖出订单-->
+    <select id="showSelloutOrder" parameterType="java.util.Map" resultType="com.daka.entry.SelloutVO">
+        select * from sellout_t where customer_id = #{customerId} and state = #{state}
+    </select>
+	<!-- 修改 -->
+	<update id="updateSellout" parameterType="com.daka.entry.SelloutVO">
+		update sellout_t
+		<trim prefix="set" suffixOverrides=",">
+			<if test="platoonId != null and platoonId != ''">platoon_id=#{platoonId},</if>
+			<if test="type != null and type != ''">type=#{type},</if>
+			<if test="account != null and account != ''">account=#{account},</if>
+			<if test="paymentImg != null and paymentImg != ''">payment_img=#{paymentImg},</if>
+			<if test="createTime != null and createTime != ''">create_time=#{createTime},</if>
+			<if test="state != null and state != ''">state=#{state},</if>
+			<if test="customerId != null">customer_id=#{customerId},</if>
+			<if test="confirmTime != null and confirmTime != ''">confirm_time=#{confirmTime},</if>
+			<if test="matchTime != null and matchTime != ''">match_time=#{matchTime},</if>
+			<if test="collectionTime != null and collectionTime != ''">collection_time=#{collectionTime},</if>
+
+		</trim>
+		where 1=1
+        <if test="orderNo !=null and orderNo !=''">and order_no=#{orderNo}</if>
+        <if test="id !=null">and id=#{id}</if>
+	</update>
+	
+	<select id="selectSelloutVO" parameterType="java.lang.String" resultType="com.daka.entry.SelloutVO">
+        select * from sellout_t where order_no = #{orderNo}
+    </select>
+    <!--void updateState(SelloutVO selloutVO); //根据卖出订单的id修改卖出订单的状态-->
+    <update id="updateState" parameterType="com.daka.entry.SelloutVO">
+        update sellout_t set state = #{state} where id = #{id}
+    </update>
+
+    <!--CustomerVO showOtherBasicInfo(Integer id) throws Exception; //根据卖出订单id查看对方信息-->
+    <select id="showOtherBasicInfo" parameterType="java.lang.Integer" resultType="com.daka.entry.CustomerVO">
+        SELECT * FROM customer_t WHERE id = (SELECT t1.customer_id FROM platoon_t t1
+        LEFT JOIN sellout_t t2 ON t2.platoon_id = t1.id WHERE t2.id = #{id})
+    </select>
+
+    <!--BankVO showOtherBankInfo(Integer id) throws Exception; //根据卖出订单id查看对方银行卡信息-->
+    <select id="showOtherBankInfo" parameterType="java.lang.Integer" resultType="com.daka.entry.BankVO">
+        SELECT * FROM bank_t WHERE customer_id = (SELECT t1.customer_id FROM platoon_t t1
+        LEFT JOIN sellout_t t2 ON t2.platoon_id = t1.id WHERE t2.id = #{id})
+
+    </select>
+
+	<select id="querySelloutVO" resultType="com.daka.entry.SelloutVO">
+        select id,order_no,customer_id,platoon_id,type,account,create_time,match_time,collection_time,confirm_time,payment_img,state from sellout_t
+    </select>
+    <!-- 订单ID查询卖方信息 -->
+	<select id="getSelloutVO" resultType="com.daka.entry.SelloutVO" parameterType="java.lang.Integer">
+        select id,order_no,customer_id,type,account,create_time,match_time,collection_time,confirm_time,payment_img,state from sellout_t where platoon_id=#{id}
+    </select>
+    <!-- 卖方ID查询卖方信息 -->
+	<select id="getSelloutVOById" resultType="com.daka.entry.SelloutVO" parameterType="java.lang.Integer">
+        select * from sellout_t where id=#{id}
+    </select>
+    <!-- 根据account查询卖方信息 -->
+	<select id="getSelloutVOByAccount" resultType="com.daka.entry.SelloutVO" parameterType="java.math.BigDecimal">
+        select id,order_no,customer_id,type,account,create_time,match_time,collection_time,confirm_time,payment_img,state from sellout_t where account=#{account}
+    </select>
+    <!-- 订单ID查询卖方信息列表 -->
+	<select id="getSelloutVOList" resultType="com.daka.entry.SelloutVO" parameterType="java.lang.Integer">
+        select * from sellout_t where platoon_id=#{id}
+    </select>
+    <!--String showPaymentImg(Integer id); //根据卖出订单id查看买方的付款截图-->
+    <select id="showPaymentImg" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT payment_img FROM sellout_t WHERE id = #{id}
+    </select>
+
+    <!--后台 分页 查询所有-->
+    <select id="queryStateSelloutlistPage" resultType="pd" parameterType="page">
+        SELECT
+        st.*, ct.user_name AS userName,pt.order_no AS platoonOrderNo
+        FROM
+        sellout_t st
+        LEFT JOIN customer_t ct ON st.customer_id = ct.id
+        LEFT JOIN platoon_t pt ON st.platoon_id = pt.id
+        where st.state = 0
+        <if test="pd.account!= null and pd.account != ''">
+            and st.account = #{pd.account}
+        </if>
+        order by st.create_time desc
+    </select>
+
+    <!--根据platoonId 查询出正在匹配的排单数据-->
+    <select id="querySelloutByPlatoonId" parameterType="com.daka.entry.SelloutVO" resultType="com.daka.entry.SelloutVO">
+        select * from sellout_t where platoon_id = #{platoonId} and state = #{state}
+    </select>
+
+    <!--//根据用户id查询此用户最近一次卖出订单的时间-->
+    <select id="querySelloutTime" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT MAX(create_time) FROM sellout_t where customer_id = #{customerId}
+    </select>
+
+    <select id="querySumAccountByType" parameterType="com.daka.entry.SelloutVO" resultType="java.math.BigDecimal">
+        select IFNULL(SUM(account),0) FROM sellout_t WHERE customer_id=#{customerId} AND type=#{type} AND state in(0,1,2);
+    </select>
+
+    <!-- 根据用户id查询卖出信息 -->
+    <select id="getSelloutInfo" resultType="com.daka.entry.SelloutVO" parameterType="java.lang.Integer">
+		select * from sellout_t where customer_id = #{customerId}
+	</select>
+
+    <!-- 根据排单id查询卖出信息 -->
+    <select id="getSelloutByPlatoonId" resultType="com.daka.entry.SelloutVO" parameterType="java.lang.Integer">
+		select * from sellout_t where platoon_id = #{id} and type = 1 and state = 4
+	</select>
+
+    <!--查询卖出订单的用户电话-->
+    <select id="querySelloutCustomer" resultType="com.daka.entry.dto.SelloutDTO" parameterType="java.lang.Integer">
+        SELECT
+            st.*,
+            ct.user_name AS userName,
+            ct.phone AS phone
+        FROM
+            sellout_t st
+        LEFT JOIN customer_t ct ON st.customer_id = ct.id
+        where st.platoon_id =#{platoonId};
+    </select>
+
+    <!-- 批量修改 -->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update sellout_t
+            <trim prefix="set" suffixOverrides=",">
+                <if test="item.platoonId != null">platoon_id=#{item.platoonId},</if>
+                <if test="item.type != null">type=#{item.type},</if>
+                <if test="item.account != null and item.account != ''">account=#{item.account},</if>
+                <if test="item.paymentImg != null and item.paymentImg != ''">payment_img=#{item.paymentImg},</if>
+                <if test="item.createTime != null and item.createTime != ''">create_time=#{item.createTime},</if>
+                <if test="item.state != null">state=#{item.state},</if>
+                <if test="item.customerId != null">customer_id=#{item.customerId},</if>
+                <if test="item.confirmTime != null and item.confirmTime != ''">confirm_time=#{item.confirmTime},</if>
+                <if test="item.matchTime != null and item.matchTime != ''">match_time=#{item.matchTime},</if>
+                <if test="item.collectionTime != null and item.collectionTime != ''">collection_time=#{item.collectionTime},</if>
+            </trim>
+            where 1=1
+            <if test="item.id !=null">and id=#{item.id}</if>
+        </foreach>
+    </update>
+
+    <!--清空付款截图-->
+    <update id="updatePaymentImgNull" parameterType="String">
+         update sellout_t set payment_img=null where id in(${ids});
+    </update>
+
+    <!--清空卖出匹配订单信息-->
+    <update id="updatePlatoonIdNull" parameterType="String">
+         update sellout_t
+            set platoon_id=null,match_time=null,collection_time=null,confirm_time=null
+         where id in(${ids});
+    </update>
+
+    <!-- 根据用户id查询卖出信息 -->
+    <select id="getSelloutInfoById" resultType="com.daka.entry.SelloutVO" parameterType="java.lang.Integer">
+		select * from sellout_t where customer_id = #{id}
+	</select>
+
+    <!-- 根据用户id查询卖出总金额-->
+    <select id="getSelloutSum"  resultType="java.math.BigDecimal">
+		select IFNULL(SUM(account),0) AS selloutAccount from sellout_t where customer_id = #{id} and state = 4
+	</select>
+
+    <select id="querySelloutOrderByCustomerId" resultType="com.daka.entry.SelloutVO">
+        select * from sellout_t where customer_id = #{customerId} and create_time > date_sub(now(), interval #{day} day)
+    </select>
+
+    <!--匹配数据-->
+    <select id="matchingSellout" resultType="com.daka.entry.SelloutVO">
+        SELECT
+            *
+        FROM
+            sellout_t
+        WHERE
+            account <![CDATA[ <= ]]> #{account}
+            AND platoon_id IS NULL
+            AND state = 0
+            AND NOT EXISTS
+            ( SELECT 1 FROM customer_t a WHERE a.state = 1 AND customer_id = id AND EXISTS
+            ( SELECT 1 FROM customer_t b WHERE b.id = #{customerId} AND b.state = 1 and a.phone = b.phone) )
+        ORDER BY
+            account DESC,
+            create_time ASC
+    </select>
+
+    <!--批量更新单据的排单ID-->
+    <update id="updateBatchPlatoonId" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update sellout_t set platoon_id = #{item.platoonId, jdbcType=INTEGER}
+            where id = #{item.id} and state = 0 and platoon_id is null
+        </foreach>
+    </update>
+
+    <!--批量更新单据的状态-->
+    <update id="updateBatchState" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update sellout_t set state = 1, match_time = now() where id = #{item.id} and state = 0
+        </foreach>
+    </update>
+
+    <select id="selectSelloutByPlatoonId" parameterType="int" resultType="com.daka.entry.dto.SelloutDTO">
+        select *, b.phone from sellout_t left join customer_t b on customer_id = b.id where platoon_id = #{platoonId}
+    </select>
+
+    <select id="selectSelloutSumByPlatoonId" parameterType="int" resultType="decimal">
+        select IFNULL(SUM(account),0) AS selloutAccount from sellout_t where platoon_id = #{platoonId}
+    </select>
+
+    <!--根据排单ID、和卖出订单状态查询相关子订单-->
+    <select id="queryPlatoonSonOrder" resultType="com.daka.entry.SelloutVO" parameterType="com.daka.entry.SelloutVO">
+        select * from sellout_t where state = #{state} and platoon_id = #{platoonId}
+    </select>
+
+    <!--更新卖出状态时间-->
+    <update id="updateCompleted" parameterType="java.lang.Integer">
+        update sellout_t set state = 4, confirm_time = now() where platoon_id=#{id}
+    </update>
+
+    <!-- 根据用户信息查询已完成的排单信息DTO- -->
+	<select id="selectPlatoonInfoList"  resultType="com.daka.entry.dto.SelloutDTO">
+		select s.*,c.user_name from platoon_t as p, sellout_t as s ,customer_t as c
+		where p.id = s.platoon_id and s.customer_id = c.id and p.customer_id = #{id}
+		and p.state = 3 and s.type=1 and s.state=4	
+	</select>
+	
+    <!--查询排单下相关的所有子订单-->
+    <select id="querySelloutByPlatoonIds" resultType="com.daka.entry.SelloutVO" parameterType="String">
+        select * from sellout_t where platoon_id in (${platoonIds});
+    </select>
+
+</mapper>

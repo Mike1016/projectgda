@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>团队中心</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/team.css" />
+</head>
+<body>
+<div class="content">
+	<header>
+		<div class="header">			
+			<span class="mui-icon mui-icon-arrowleft" onclick="javascript:window.location.href='index.html'"></span>
+			<p>团队中心</p>
+		</div>
+		<img src="img/team/tuanduizhongxin.png" alt="" />
+	</header>
+	
+	<div class="cont">
+		<div class="flexrow between cont_title jcsb">
+			<div>				
+				<p>我的会员等级</p>
+				<p class="dj"></p>
+			</div>
+			<div>				
+				<p>我的团队总人数</p>
+				<p class="tdzrs"></p>
+			</div>
+			<div>				
+				<p>直推人数</p>
+				<p class="ztrs"></p>
+			</div>
+		</div>
+	</div>
+	<div class="people">
+		<div class="text_title"  onclick="javascript:window.location.href='activationCode.html'">			
+			<div class="l"></div>
+			<span class="today">激活码</span> 
+			<span class="" style="float: right;"><span class="mui-icon mui-icon-forward"></span></span>
+		</div>
+	</div>
+
+	<div class="people">
+		<div class="text_title"  onclick="javascript:window.location.href='zhitui.html'">			
+			<div class="l"></div>
+			<span class="today">查看直推人数</span> 
+			<span class="" style="float: right;"><span class="mui-icon mui-icon-forward"></span></span>
+		</div>
+	</div>
+	
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type: 'get',
+	url: '/app/customer/teamCenter.do',
+	data: {
+		sessionId: sid
+	},
+	success: function(res) {
+		console.log(res);
+		if(res.status == 1) {
+			var v = res.data;
+			$('.dj').text(v.level);
+			$('.tdzrs').text(v.teamCount);
+			$('.ztrs').text(v.pushCount);
+		} else {
+			mui.toast(res.msg);
+		}
+	}
+})
+</script>
+</html>

@@ -1,0 +1,42 @@
+
+.cont{
+	width: 100%;
+	height: auto;
+	background: #fff;
+	margin-top:0.24rem;
+	margin-bottom:0.24rem;
+}
+.cont>div{
+	border-bottom:1px solid #f2f2f2 ;
+	padding: 0.3rem 0.4rem;
+}
+.cont>div:last-child{
+	border-bottom: none ;
+}
+.cont img{
+	width: 1.5rem;
+	height: 1.5rem;
+	border-radius: 50%;
+}
+input[type=text]{
+	text-align: right;
+	padding: 0;
+	height: 20px;
+}
+.copy{
+	border:none
+}
+.zhi{padding: 0.3rem;}
+
+#sfzzm{
+	width: 70%;
+	height: 100%;
+	z-index: 1;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 15%;
+}
+.code{
+	vertical-align: text-top;
+}

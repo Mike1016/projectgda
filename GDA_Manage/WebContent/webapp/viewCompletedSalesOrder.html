@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>支付凭证</title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/base.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft" onclick="javascript:window.location.href='selldete.html'"></span>
+		<p class="header_title">支付凭证</p>
+	</div>
+	
+	<div class="cont">
+		<img class="pz" src="" alt="" style="margin: 3%; width: 94%;" />
+		
+		
+		
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+	var mcid = localStorage['mcddid'];
+	ajax({
+		type:'get',
+		url:'/app/sellout/showPaymentImg.do',
+		data:{
+			sessionId:sid,
+			id:mcid
+		},
+		success:function(res){
+			console.log(res);
+			if(res.status == 1){
+				$('.pz').attr('src',base + res.data);
+			}else{
+				mui.toast(res.msg)
+			}
+			
+		}
+	});	
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>主页</title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+<div class="content">
+	<header>
+		<div class="flexrow center header">
+			<div class="user">
+				欢迎：<span class="uname"></span>
+			</div>		
+			<div class="Avatar">
+				<img src="img/index/touxiang.png" alt="" class="avatar" onclick="window.location.href='personal.html'"/>
+				<img  src="" alt="" class="level"/>
+			</div>
+		</div>
+		<div class="all_money">
+			<p>总资产</p>
+			<span class="totalAssets"></span>
+		</div>
+		
+		<div class="flexrow jcct knapsack">
+			<div>
+				<span>财富背包</span>
+				<span  class="buycount"></span>
+			</div>
+			<div>
+				<span>奖金背包</span>
+				<span class="buywealth"></span>
+			</div>
+		</div>
+	</header>
+	
+	<div class="cont">
+		<div class="flexrow center wealth card">
+			<div onclick="window.location.href='financial.html'" style="padding-top:0;">
+			 	<img src="img/index/caiwu.png" alt="" />
+			 	<p>财务中心</p>
+			 	<span>FINANCE</span>
+			</div>
+			<div onclick="window.location.href='team.html'" style="padding-top:0;">
+			 	<img src="img/index/tuandui.png" alt="" />
+			 	<p>团队中心</p>
+			 	<span>TEAM</span>
+			</div>
+			<div onclick="window.location.href='wealth.html'" style="padding-top:0;">
+			 	<img src="img/index/mairu.png" alt="" />
+			 	<p>买入财富</p>
+			 	<span>BUYING</span>
+			</div>
+			<div onclick="window.location.href='sellwealth.html'" style="padding-top:0;">
+			 	<img src="img/index/maichu.png" alt="" />
+			 	<p>卖出财富</p>
+			 	<span>SELLING</span>
+			</div>
+		</div>
+		<div class="card">
+		<div class="flexrow center wealth ">
+			<div class="title" onclick="window.location.href='buymatch.html'" style="width: 100%;height:0.8rem;text-align: left;padding: 0;">
+				<div class="l"></div>
+				<span class="buy">买入订单</span>
+				<span class="look">查看更多>></span>
+			</div>
+			<div onclick="window.location.href='buymatch.html'">
+				<img src="img/index/mairu-daipipei.png" alt="" />
+			 	<p>待匹配</p>
+			</div>
+			<div onclick="window.location.href='buypayment.html'">
+			 	<img src="img/index/mairu-daifukuan.png" alt="" />
+			 	<p>待付款</p>
+			</div>
+			<div onclick="window.location.href='buydete.html'">
+			 	<img src="img/index/mairu-daiqueren.png" alt="" />
+			 	<p>待确认</p>
+			</div>
+			<div onclick="window.location.href='buyover.html'">
+			 	<img src="img/index/mairu-yiwancheng.png" alt="" />
+			 	<p>已完成</p>
+			</div>
+		</div>
+		<div class="flexrow center wealth" style="border-bottom:none;">
+			<div class="title" onclick="window.location.href='sellmatch.html'" style="width: 100%;height:0.8rem;text-align: left;padding: 0;">
+				<div class="l"></div>
+				<span class="buy">卖出订单</span>
+				<span class="look">查看更多>></span>
+			</div>
+			<div onclick="window.location.href='sellmatch.html'">
+				<img src="img/index/maichu-daipipei.png" alt="" />
+			 	<p>待匹配</p>
+			</div>
+			<div onclick="window.location.href='sellpayment.html'">
+			 	<img src="img/index/maichu-daishoukuan.png" alt="" />
+			 	<p>待收款</p>
+			</div>
+			<div onclick="window.location.href='selldete.html'">
+			 	<img src="img/index/maichu-daiqueren.png" alt="" />
+			 	<p>待确认</p>
+			</div>
+			<div onclick="window.location.href='sellover.html'">
+			 	<img src="img/index/maichu-yiwancheng.png" alt="" />
+			 	<p>已完成</p>
+			</div>
+		</div>
+		</div>
+		<div class="flexrow center card">
+		
+			<div class="title" style="width: 100%;height:0.8rem;text-align: left;">
+				<div class="l"></div>
+				<span class="buy">活动中心</span>
+			</div>
+			
+			<div class="flexrow center bottom" onclick="window.location.href='turntableLottery.html'">
+				<div class="lg">
+					<img src="img/index/zhuanpan.png" alt="" />
+				</div>
+				<div class="growing">
+					幸运转盘 <span class="mui-icon mui-icon-forward" style="padding-left: 4rem;"></span>
+				</div>				
+			</div>
+		</div>
+		<div class="flexrow center card">
+		
+			<div class="title" style="width: 100%;height:0.8rem;text-align: left;">
+				<div class="l"></div>
+				<span class="buy">收益专区</span>
+			</div>
+			<div class="flexrow center bottom" onclick="window.location.href='growing.html'" style="border-bottom: 1px solid #F2F2F2;">
+				<div class="lg">
+					<img src="img/index/chengzhangzhong.png" alt="" />
+				</div>
+				<div class="growing">
+					成长中的财富 <span>查看更多>></span>
+				</div>				
+			</div>
+			<div class="flexrow center bottom" onclick="window.location.href='income.html'">
+				<div class="lg">
+					<img src="img/index/yishouyi.png" alt="" />
+				</div>
+				<div class="growing">
+					已收益的财富 <span>查看更多>></span>
+				</div>				
+			</div>
+		</div>
+	</div>
+		
+	
+</div>
+
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type: 'get',
+	url: '/app/customer/showPersonalInfo.do',
+	data: {
+		sessionId: sid
+	},
+	success: function(res) {
+		console.log(res);
+		if(res.status == 1) {
+			var v = res.data;
+			var he = v.wealth+v.bonus;
+			if(v.headImg){
+				$('.avatar').attr('src',base+v.headImg);
+			}
+			$('.uname').text(v.userName); //用户名
+			$('.level').attr('src', 'img/index/' + v.level + '.png'); //等级
+			$('.totalAssets').text(he.toFixed(0)); //总资产
+			$('.buycount').text(v.wealth.toFixed(0)); //财富背包
+			$('.buywealth').text(v.bonus.toFixed(0)); //奖金背包
+		} else {
+			mui.toast(res.msg);
+		}
+	}
+})
+</script>
+</body>
+</html>

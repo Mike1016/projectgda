@@ -1,0 +1,55 @@
+.headers{
+	position: fixed;
+	z-index: 9;
+}
+.cont{
+	position: relative;
+	top: 1rem;
+	margin-top: 0.24rem;
+}
+.cont>div{
+	width: 98%;
+	margin: 0.24rem auto;
+	background: #fff;
+	border-radius: 0.2rem;
+}
+.cont p{
+	color: #333;
+	padding: 0.2rem;
+	text-align: center;
+	font-size: 0.5rem;
+	border-bottom: 1px solid #f2f2f2;
+}
+.box>div:first-child{
+	padding: 0.3rem;
+	color: #666;
+	border-bottom:1px solid #F2F2F2 ;
+}
+.box>div:last-child{
+	padding: 0.3rem;
+	color: #666;
+}
+
+
+
+.text{
+	margin-top: 0.24rem;
+	position: relative;
+	top:1rem
+}
+.text .active{
+	color: #FF4878;
+	border-bottom: 2px solid #FF4878;
+}
+.text .title{
+	width: 100%;
+	height: 1rem;
+	background: #fff;
+}
+.title div{
+	margin: auto;
+}
+.image{
+	margin-top: 0.24rem;
+	
+}

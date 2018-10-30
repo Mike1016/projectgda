@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.tray.log.ITrayLogDAO">
+
+	<sql id="TrayLogVO">
+		id,customer_id,type,account,create_time,state,prizes,vitality
+	</sql>
+	
+	<!-- 添加领奖记录 -->
+	<insert id="insert" parameterType="com.daka.entry.TrayLogVO">
+		insert into tray_log_t(type,account,customer_id,create_time,state,prizes,vitality) 
+		values(#{type},#{account},#{customerId},#{createTime},#{state},#{prizes},#{vitality})
+	</insert>
+	
+	<!-- 发货 -->
+	<update id="update" parameterType="com.daka.entry.TrayLogVO">
+		update tray_log_t set state=#{state} where id=#{id}
+	</update>
+	
+	<!-- 根据id查询领奖记录 -->
+	<select id="findById" parameterType="java.lang.Integer" resultType="com.daka.entry.TrayLogVO">
+		select 
+		<include refid="TrayLogVO"></include>
+		from tray_log_t where id=#{id}
+	</select>
+	
+	<!-- 查询用户的抽奖记录 --> 
+	<select id="findByCustomer" parameterType="java.lang.Integer" resultType="com.daka.entry.TrayLogVO">
+		select 
+		<include refid="TrayLogVO"></include>
+		from tray_log_t where customer_id=#{customerId}  order by create_time desc limit #{page},20
+	</select>
+
+	<!-- 根据用户id查询中奖信息 -->
+	<select id="trayLogList" parameterType="java.lang.Integer" resultType="com.daka.entry.TrayLogVO">
+		select 
+		<include refid="TrayLogVO"></include>
+		from tray_log_t where customer_id=#{customerId} order by create_time desc
+	</select>
+	
+	<!-- 分页查询所有用户的中奖记录 -->
+	<select id="findAll" parameterType="java.util.Map" resultType="com.daka.entry.dto.TrayLogDTO">
+		select 
+		tray_log_t.*,customer_t.user_name as userName 
+		from tray_log_t,customer_t where tray_log_t.customer_id=customer_t.id 
+		order by create_time desc limit 0,20
+	</select>
+	
+</mapper>

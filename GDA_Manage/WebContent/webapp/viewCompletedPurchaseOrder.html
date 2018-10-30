@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>查看买入已完成订单</title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/buysell.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft back"></span>
+		<p class="header_title">买入订单</p>
+	</div>
+	
+	<div class="cont">
+		
+		<!--<div class="card">
+			<div class="">
+				<div class="flexrow jcsb">
+					<span>订单编号：2121564654654654</span>
+					<span>14000</span></div>
+				<div class="flexrow jcsb">
+					<span class="djstext"></span>
+					<span>申请时间 2018-08-20 18:29:22</span>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="ddxx">
+				<div class="flexrow jcsb">
+					<span>订单编号：2121564654654654</span>
+					<span>14000</span></div>
+				<div class="flexrow jcsb">
+					<span class="djstext"></span>
+					<button class="xxbtns" data-mrddid="1">对方信息</button>
+				</div>
+			</div>
+			<div class="ddxx">
+				<div class="flexrow jcsb">
+					<span>订单编号：2121564654654654</span>
+					<span>14000</span></div>
+				<div class="flexrow jcsb">
+					<span class="djstext"></span>
+					<button class="xxbtns" data-mrddid="2">对方信息</button>
+				</div>
+			</div>
+			<div class="ddxx">
+				<div class="flexrow jcsb">
+					<span>订单编号：2121564654654654</span>
+					<span>14000</span></div>
+				<div class="flexrow jcsb">
+					<span class="djstext"></span>
+					<button class="xxbtns" data-mrddid="3">对方信息</button>
+				</div>
+			</div>
+		</div>
+		-->
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+$(()=>{
+	var mrid = localStorage['mrddid'];
+	ajax({
+		type:'get',
+		url:'/app/platoon/showOrderByPlatoonId.do',
+		data:{
+			sessionId:sid,
+			id:mrid
+		},
+		success:function(res){
+			console.log(res);
+			if(res.status == 1){
+				var h='', v=res.data;
+					
+						
+						h+=`
+		<div class="card">
+			<div class="">
+				<div class="flexrow jcsb">
+					<span>订单编号：${v.orderNo}</span>
+					<span>${v.account}</span>
+				</div>
+				<div class="flexrow jcsb">
+					<span  class="djstext"></span>
+					<span>申请时间: ${v.matchTime}</span>
+				</div>
+			</div>
+		</div>
+						`;
+						h+=`<div class="card">`;
+						$.each(v.selloutVOList, function(k,v) {
+							h+=`
+			<div class="ddxx">
+				<div class="flexrow jcsb">
+					<span>订单编号：${v.orderNo}</span>
+					<span>${v.account}</span>
+				</div>
+				<div class="flexrow jcsb">
+					<span class="djstext"></span>
+					<button class="xxbtns" data-mrddid="${v.id}">对方信息</button>
+				</div>
+			</div>
+							`;
+					
+						h+=`</div>`;
+					});
+			$(".cont").append(h);
+		}else{
+			mui.toast(res.msg);
+		}
+		}
+	});
+})
+$('.content').on('tap','.xxbtns',function(){
+	var that = $(this);
+	var id = that.attr('data-mrddid');
+	localStorage['dfxx'] = id;
+	location.href="receivablesInformation2.html";
+});
+</script>
+</body>
+</html>

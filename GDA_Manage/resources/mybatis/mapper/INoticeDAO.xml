@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.notice.INoticeDAO">
+
+    <!--List<NoticeVO> queryNotice(); // 显示所有公告-->
+    <select id="queryNotice" resultType="com.daka.entry.NoticeVO">
+        select * from notice_t
+    </select>
+
+    <!-- List<Map<String,Object>> queryDatalistPage(Page page); -->
+    <select id="queryDatalistPage" parameterType="page" resultType="pd">
+        select * from notice_t where 1=1
+        <if test="pd.title!= null and pd.title != ''">
+            and title like CONCAT('%', #{pd.title}, '%')
+        </if>
+    </select>
+
+    <!-- void deleteNoticeById(String id); -->
+    <delete id="deleteNoticeById" parameterType="java.lang.String">
+		delete from notice_t where id=#{id}
+	</delete>
+
+    <!-- Map<String,Object> queryNoticeById(String id);v -->
+    <select id="queryNoticeById" parameterType="java.lang.String" resultType="java.util.Map">
+		select * from notice_t where id=#{id}
+	</select>
+
+    <!-- 修改 -->
+    <update id="updateNoticeById" parameterType="java.util.Map">
+        update notice_t
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null and title != ''">title=#{title},</if>
+            <if test="content != null and content != ''">content=#{content},</if>
+            <if test="create_time != null and create_time != ''">create_time=#{create_time},</if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <!-- void insertNotice(NoticeVO noticeVO); -->
+    <insert id="insertNotice" parameterType="com.daka.entry.NoticeVO">
+		insert into notice_t (title,content,create_time) values (#{title},#{content},#{createTime})
+	</insert>
+</mapper>

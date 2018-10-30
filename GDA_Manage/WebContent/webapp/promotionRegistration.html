@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+   		<meta name="apple-touch-fullscreen" content="yes">
+   		<meta name="format-detection" content="telephone=no" />
+		<title>注册</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/base.css" rel="stylesheet" />
+		<link href="css/login.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="content">
+			<div class="logo" style="margin: 8% 41%;">
+				<img src="img/login/logo.png" alt="" />
+			</div>
+			<div class="inptkuag">
+				<div class="srk flexrow jcct">
+					<div class="tb">
+						<img src="img/login/yonghuming.png" alt="" />
+					</div>
+					<div class="inpt">
+						<input type="text" class="uname" maxlength="6" placeholder="请输入用户名(最长6位)"/>
+					</div>
+				</div>
+				<div class="srk flexrow jcct">
+					<div class="tb">
+						<img src="img/login/tuijianma.png" alt="" />
+					</div>
+					<div class="inpt">
+						<input type="text" readonly="readonly" class="recommendationCode" placeholder="请输入推荐码"/>
+					</div>
+				</div>
+				<div class="srk flexrow jcct">
+					<div class="tb">
+						<img src="img/login/shoujihao.png" alt="" />
+					</div>
+					<div class="inpt">
+						<input type="text" class="shoujihao" maxlength="11"  pattern="\d*"   placeholder="请输入手机号"/>
+					</div>
+				</div>
+				<div class="srk flexrow jcct">
+					<div class="tb">
+						<img src="img/login/yanzhengma.png" alt="" />
+					</div>
+					<div class="inpt pr">
+						<input type="text" class="smsCode"  pattern="\d*"  placeholder="请输入验证码"/>
+						<button class="yzm dxyz">
+							获取验证码
+						</button>
+					</div>
+				</div>
+				<div class="srk flexrow jcct">
+					<div class="tb">
+						<img src="img/login/mima.png" alt="" />
+					</div>
+					<div class="inpt pr">
+						<input type="password" class="mm" placeholder="请输入密码(6-16位)"/>
+					</div>
+				</div>
+				<div class="srk flexrow jcct">
+					<div class="tb">
+						<img src="img/login/mima.png" alt="" />
+					</div>
+					<div class="inpt pr">
+						<input type="password" class="confirmPwd" placeholder="请确认密码"/>
+					</div>
+				</div>
+			</div>
+			<div class="btnkuang">
+				<button class="btn">立即注册</button>
+			</div>
+			
+		</div>
+
+		<script src="js/jquery.min.js"></script>
+		<script src="js/base.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/public.js"></script>
+		<script src="js/ajax.js"></script>
+		<script>
+			var hp = location.search.slice(1,7);//location.hash
+			$('.recommendationCode').val(hp);
+				ajax({
+					type:"get",
+					url:'/app/customer/showLogo.do',
+					data:{
+					},
+					success:function(res){
+						console.log(res);
+						if(res.status == 1){
+							$('.logo>img').attr('src',base + res.data);
+						}else{
+							mui.toast(res.msg);
+						}
+					} 
+				});
+			$('.btn').on('tap',function(){
+				var uname = $.trim($('.uname').val());
+				var recommendationCode = $.trim($('.recommendationCode').val());
+				var sj = $.trim($('.shoujihao').val());
+				var smsCode = $.trim($('.smsCode').val());
+				var mm = $.trim($('.mm').val());
+				var confirmPwd = $.trim($('.confirmPwd').val());
+				console.log(mm,uname,sj,smsCode,confirmPwd);
+				if(mm =='' || uname ==''|| sj ==''|| smsCode ==''|| confirmPwd ==''){
+					mui.toast("请输入完整信息");
+					return false;
+				}
+				var phoneReg = /^1[345789]\d{9}$/;
+				var pwdReg = /^[a-zA-Z0-9]{6,16}$/;
+				if(!phoneReg.test(sj)){
+					mui.toast('请输入有效的手机号！');
+					return;
+				}
+				if(!pwdReg.test(mm)){
+					mui.toast('密码为6-16位！');
+					return;
+				}
+				if(mm !== confirmPwd){
+					mui.toast('请重新确认密码！');
+					return;
+				}
+				var data = {
+					userName:uname,
+					phone:sj,
+					authCode:smsCode,
+					extensionCode:recommendationCode,
+					password:mm
+				};
+				console.log(data);
+				ajax({
+					type:"POST",
+					url:'/app/customer/register.do',
+					data:data,
+					success:function(res){
+						if(res.status == 1){
+							mui.toast(res.msg);
+							location.href='downloadApp.html';
+						}else{
+							mui.toast(res.msg);
+						}
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

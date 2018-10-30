@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.dynamicTimerTask.IDynamicTimerTaskDAO">
+	
+	<!-- 添加 -->
+	<insert id="saveDynamicTimerTask" parameterType="com.daka.entry.DynamicTimerTaskVO">
+		insert into dynamic_timer_task_t
+		(task_id,
+		task_desc,
+		cron_expression,
+		state,
+		create_time,
+		task_name,
+		task_job_class
+		)values(
+		#{taskId},
+		#{taskDesc},
+		#{cronExpression},
+		#{state},
+		#{createTime},
+		#{taskName},
+		#{taskJobClass}
+		)  
+	</insert>
+	
+	<!-- 删除 -->
+	<delete id="delDynamicTimerTaskByTaskName" >
+		update dynamic_timer_task_t set status = -1, state = -1 where task_name=#{0}
+	</delete>
+	
+	<select id="queryDynamicTimerTask" resultType="com.daka.entry.DynamicTimerTaskVO">
+		select * from dynamic_timer_task_t where status=1 and state = 1
+	</select>
+
+	<!--后台 分页 查询所有-->
+	<select id="queryDynamicTimerTasklistPage" resultType="pd" parameterType="page">
+		select * from dynamic_timer_task_t
+		<if test="pd.taskId!= null and pd.taskId != ''">
+			where task_id like CONCAT('%', #{pd.taskId}, '%')
+		</if>
+		order by create_time desc
+	</select>
+
+	<!--根据task_name 查询定时任务-->
+	<select id="queryDynamicTimerTaskByTaskName" resultType="com.daka.entry.DynamicTimerTaskVO" parameterType="String">
+		select * from dynamic_timer_task_t
+		where status=1 and state = 1 and task_name = #{taskName}
+	</select>
+</mapper>

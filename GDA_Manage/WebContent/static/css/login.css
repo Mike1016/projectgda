@@ -1,0 +1,40 @@
+body{
+	margin: 0;
+	padding: 0;
+	background-image: url('../img/bg.png') ;
+	background-repeat: no-repeat;
+	background-size:cover;
+}
+.cont{
+	position: absolute; 
+	left: 50%; 
+	top: 50%; 
+	width: 500px;
+	margin-left: -160px;
+	margin-top: -110px;
+}
+
+#code{ 
+	width: 150px;
+	height:35px; 
+	margin-left:40px;
+    font-style:italic; 
+    color:#1A5CB0; 
+    border:0;  
+    letter-spacing:5px; 
+    font-weight:bolder;
+    font-size: 22px;; 
+} 
+.login_btn{
+	background: #fff;
+	font-size: 20px;
+	color:#000
+}
+.footer{
+	position: absolute;
+    bottom: 0;
+    font-size: 20px;
+    color: #fff;
+    left: 38%;
+	
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>买入财富记录</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/buy.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft back"></span>
+		<p class="header_title">买入财富记录</p>
+	</div>
+	
+
+	<div class="cont">		
+		<div class="title text">
+			<div>财富值</div>
+			<div>收款账户</div>
+			<div>状态</div>
+			<div>交易时间</div>
+		</div>
+		<!--<div class="text cont_text">
+			<div>1000</div>
+			<div>测试账号</div>
+			<div>成功</div>
+			<div>2018.8.21 21:21:21</div>
+		</div>-->
+	</div>
+	
+</div>		
+	
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type:'get',
+	url:'/app/sellout/getWealthInfo.do',
+	data:{
+		sessionId:sid,
+		type:0
+	},
+	success:function(res){
+		console.log(res);
+		if(res.status == 1){
+		var html='';
+		html+='<div class="title text"><div>财富值</div><div>收款账户</div><div>状态</div><div>交易时间</div></div>';
+		$.each(res.data, function(k,v) {			
+			html+=	'<div class="text cont_text">'+
+						'<div>'+v.account+'</div>'+
+						'<div>'+v.userName+'</div>'+
+						'<div>成功</div>'+
+						'<div>'+v.confirmTime+'</div>'+
+					'</div>';
+		});
+		$(".cont").html(html);
+		}else{
+			mui.toast(res.msg);
+		}
+	}
+});
+</script>
+</html>

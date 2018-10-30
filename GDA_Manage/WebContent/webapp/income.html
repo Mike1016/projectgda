@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>已收益的财富</title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/growing.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft back1"></span>
+		<p class="header_title">已收益的财富</p>
+	</div>
+	
+	<div class="cont">
+		<!--<div class="flexrow between">
+			<div>5000</div>
+			<div>收益时间 <span>2018-08-16 20:05:32</span></div>
+		</div>
+		<div class="flexrow between">
+			<div>5000</div>
+			<div>收益时间 <span>2018-08-16 20:05:32</span></div>
+		</div>-->
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+ajax({
+	type:'get',
+	url:'/app/platoon/getWealthIncome.do',	
+	data:{
+		sessionId:sid,
+		type:1
+	},
+	success:function(res){
+		console.log(res)
+		if(res.status == 1){
+		var html='';
+		if(res.data.platoonvoLists.length>0){
+		$.each(res.data.platoonvoLists,function(k,v){
+		html+= 	'<div class="flexrow between">'+
+					'<div>'+v.account+'</div>'+
+					'<div>收益时间 <span class="countdown">'+v.confirmTime+'</span></div>'+
+				'</div>';
+		});
+        }else {
+            html+=`
+						<div class="wsj">暂无数据·····</div>
+					`;
+		}
+		$(".cont").html(html);
+		}else{
+			mui.toast(res.msg);
+		}
+	}
+})
+</script>
+</html>

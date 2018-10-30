@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>卖出-待收款</title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/buysell.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft back1"></span>
+		<p class="header_title">卖出订单</p>
+	</div>
+	
+	<div class="cont">
+		<div class="flexrow between">
+			<div onclick="window.location.href='sellmatch.html'">
+				<img src="img/index/maichu-daipipei.png" alt="" />
+				<p>待匹配</p>
+			</div>
+			<div class="active" onclick="window.location.href='sellpayment.html'">
+				<img src="img/index/maichu-daishoukuan.png" alt="" />
+				<p>待收款</p>
+			</div>
+			<div  onclick="window.location.href='selldete.html'">
+				<img src="img/index/maichu-daiqueren.png" alt="" />
+				<p>待确定</p>
+			</div>
+			<div onclick="window.location.href='sellover.html'">
+				<img src="img/index/maichu-yiwancheng.png" alt="" />
+				<p>已完成</p>
+			</div>
+		</div>
+		
+		<!--<div class="card">
+			<div class="ddxx">
+				<div class="flexrow jcsb">
+					<span>订单编号：2121564654654654</span>
+					<span>14000</span></div>
+				<div class="flexrow jcsb">
+					<span  class="djstext">已等待：<span class="countdown">23:12:02</span></span>
+					<span>匹配时间 2018-08-20 18:29:22</span>
+				</div>
+			</div>
+			<div class="flexrow fright yhxx">
+				<button class="xxbtn" data-mcddid="2">对方信息</button>
+			</div> 
+		</div>-->
+		
+		
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+$(()=>{
+	ajax({
+		type:'get',
+		url:'/app/sellout/showSelloutOrder.do',
+		data:{
+			sessionId:sid,
+			state:1
+		},
+		success:function(res){
+			console.log(res);
+			if(res.status == 1){
+				
+				if(res.data.length > 0){
+					$.each(res.data, function(k,v) {
+						var h ='';
+						h+=`
+		<div class="card">
+			<div class="">
+				<div class="flexrow jcsb">
+					<span>订单编号：${v.orderNo}</span>
+					<span>${v.account}</span></div>
+				<div class="flexrow jcsb">
+					<span  class="djstext">已等待：<span class="countdown${k}"></span></span>
+					<span>匹配时间 ${v.matchTime}</span>
+				</div>
+			</div>
+			<div class="flexrow fright yhxx">
+				<button class="xxbtn" data-mcddid="${v.id}">对方信息</button>
+			</div>
+		</div>
+						`;
+			$(".cont").append(h);
+			contdown(v.matchTimeStamp,v.nowTimeStamp,k);
+					});
+				}else{
+					h+=`
+						<div class="wsj">暂无数据·····</div>
+					`;
+				}
+				
+				
+		}else{
+			mui.toast(res.msg);
+		}
+		}
+	});
+})
+$('.content').on('tap','.xxbtn',function(){
+	var that = $(this);
+	var id = that.attr('data-mcddid');
+	localStorage['mcddid'] = id;
+	location.href="payerInformation.html";
+})
+</script>
+</body>
+</html>

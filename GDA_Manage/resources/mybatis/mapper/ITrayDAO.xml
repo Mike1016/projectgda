@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.tray.ITrayDAO">
+
+    <!-- 根据奖品编号查询奖品信息 -->
+    <select id="findByNo" parameterType="java.lang.Integer" resultType="com.daka.entry.TrayVO">
+        select *
+        from tray_t
+        where tray_no = #{trayNo}
+    </select>
+
+    <select id="findByGrade" parameterType="java.lang.Integer" resultType="com.daka.entry.TrayVO">
+        select *
+        from tray_t
+        where tray_grade = #{trayGrade}
+        order by tray_no asc
+    </select>
+    <!--根据id查询奖品-->
+    <select id="findTrayById" parameterType="java.lang.Integer" resultType="com.daka.entry.TrayVO">
+        select *
+        from tray_t
+        where id = #{id}
+    </select>
+    <!--后台 分页 查询所有-->
+    <select id="queryTraylistPage" resultType="pd" parameterType="page">
+        select id as id,
+        tray_no as trayNo,
+        tray_grade as trayGrade,
+        type as type,
+        account as account,
+        context_img as contextImg,
+        concat(TRUNCATE(probability*1000,3),'‰') as probability,
+        create_time as createTime,
+        prizes as prizes
+        from tray_t
+        <if test="pd.trayGrade!= null and pd.trayGrade != ''">
+            where tray_grade=#{pd.trayGrade}
+        </if>
+        order by createTime desc
+    </select>
+
+    <!-- 修改转盘的奖品信息 -->
+    <update id="update" parameterType="com.daka.entry.TrayVO">
+        update tray_t
+        set type        = #{type},
+            account     = #{account},
+            context_img = #{contextImg},
+            probability = #{probability},
+            create_time = NOW(),
+            prizes      = #{prizes}
+        where id = #{id}
+    </update>
+
+
+    <!-- 计算此奖品所在的档数其他奖品的概率之和 -->
+    <select id="sumProbability" parameterType="com.daka.entry.TrayVO" resultType="java.math.BigDecimal">
+        select sum(probability)
+        from tray_t
+        where tray_grade = #{trayGrade}
+          and id != #{id}
+    </select>
+    
+    <!-- 计算档数奖品的概率之和 -->
+    <select id="sumProbabilitycount" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select sum(probability)
+        from tray_t 
+        where tray_grade = #{trayGrade}
+    </select>
+
+</mapper>

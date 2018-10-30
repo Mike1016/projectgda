@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.bonusLog.IBonusLogDAO">
+    <!--后台 分页 查询所有-->
+    <select id="queryBonusLoglistPage" resultType="pd" parameterType="page">
+        select blt.* , ct.user_name AS userName from bonus_log_t blt
+        LEFT JOIN customer_t ct ON blt.customer_id = ct.id
+        <if test="pd.userName!= null and pd.userName != ''">
+            where ct.user_name like CONCAT('%', #{pd.userName}, '%')
+        </if>
+        order by blt.create_time desc
+    </select>
+
+    <!--添加每日利息日志-->
+    <insert id="insertBonusLog">
+        INSERT INTO bonus_log_t ( customer_id, origin_account, account, interest, create_time ) SELECT
+        id,
+        wealth,
+        ( SELECT parameter FROM dictionaries_t WHERE type = concat( 'BONUS_', `level` ) ) * wealth,
+        ( SELECT parameter FROM dictionaries_t WHERE type = concat( 'BONUS_', `level` ) ),
+        now()
+        FROM
+            customer_t
+        WHERE
+            state = 1 and wealth  <![CDATA[ > ]]> 0
+    </insert>
+
+    <!--获取每日利息记录-->
+    <select id="selectBonusLogList" parameterType="int" resultType="com.daka.entry.BonusLogVO">
+        SELECT account, DATE_FORMAT(create_time, '%Y-%m-%d') FROM bonus_log_t WHERE customer_id = #{customerId} ORDER BY create_time DESC
+    </select>
+
+    <!--删除每日利息日志-->
+    <delete id="delectBonusLogById" parameterType="java.lang.Integer">
+        delete from bonus_log_t where id = #{id}
+    </delete>
+
+</mapper>

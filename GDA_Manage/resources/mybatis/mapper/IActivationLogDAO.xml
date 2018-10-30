@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.activationLog.IActivationLogDAO">
+    <!-- 批量增加激活数日志 -->
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into activation_log_t(type,account,activator,customer_id,create_time) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.type},#{item.account},#{item.activator},#{item.customerId},#{item.createTime})
+        </foreach>
+    </insert>
+
+    <!--后台 分页 查询所有-->
+    <select id="queryActivationLoglistPage" resultType="pd" parameterType="page">
+        SELECT
+        *, (
+        SELECT
+        user_name
+        FROM
+        customer_t
+        WHERE
+        id = alt.activator
+        ) AS activatorName,
+        (
+        SELECT
+        user_name
+        FROM
+        customer_t
+        WHERE
+        id = alt.customer_id
+        ) AS userName
+        FROM
+        activation_log_t alt
+        <if test="pd.activationType!= null and pd.activationType != ''">
+            where type like CONCAT('%', #{pd.activationType}, '%')
+        </if>
+        order by alt.create_time desc
+    </select>
+    
+    <!-- 修改激活信息 -->
+    <update id="updateActivationLog" parameterType="com.daka.entry.ActivationLogVO">
+    	update activation_log_t
+    	<set>
+    		<if test="type != null"> type = #{type},</if>
+    		<if test="account != null"> account = #{account},</if>
+    		<if test="activator != null"> activator = #{activator},</if>
+    		<if test="customerId != null"> customer_id = #{customerId},</if>
+    		<if test="createTime != null and createTime != ''"> create_time = #{createTime},</if>
+    	</set>  
+    	where id = #{id} 
+    </update>
+    
+    <!-- 根据用户id查询激活信息 -->
+    <select id="selectActivationLogById" resultType="com.daka.entry.ActivationLogVO" parameterType="java.lang.Integer">
+    	select * from activation_log_t as a , customer_t as c where a.customer_id = c.id and customer_id = #{id}
+    </select>
+
+    <!--删除激活日志-->
+    <delete id="delectActivationLogById" parameterType="java.lang.Integer">
+        delete from activation_log_t where id = #{id}
+    </delete>
+    
+	<!--根据激活码类型和用户id查询激活信息-->
+    <select id="selectActivationLogInfo" resultType="com.daka.entry.dto.IActivationLogDTO" parameterType="java.util.Map">
+	    select a.id,a.type,a.account,IFNULL(c1.user_name,'管理员') as customers,c2.user_name as activators,a.create_time
+		from activation_log_t as a  
+		LEFT JOIN customer_t as c1 on a.activator=c1.id  
+		LEFT JOIN customer_t as c2 on a.customer_id=c2.id 
+		where customer_id = #{id} and type = #{type} order by create_time desc
+    </select> 
+    
+    <!-- 增加激活数日志 -->
+    <insert id="saveActivatorLog" parameterType="com.daka.entry.ActivationLogVO">
+       	 	insert into activation_log_t(type,account,activator,customer_id,create_time
+        ) values(
+       		 #{type},#{account},#{activator},#{customerId},#{createTime}
+        )
+
+    </insert>
+ 
+</mapper>

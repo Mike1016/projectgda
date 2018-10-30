@@ -1,0 +1,64 @@
+.cont div{
+	height: 1.2rem;
+	line-height: 1.2rem;	
+	padding:0 0.2rem 0  0.5rem;
+	border-bottom: 1px solid #f2f2f2;
+	background: #fff;
+	margin-top: 0.24rem;
+}
+.mui-icon-arrowright{
+	position: absolute;
+	left: 6.7rem;
+	margin-top:0.25rem;
+	color: #666;
+}
+
+
+.box{
+	width: 100%;
+	height: auto;
+	background: #fff;
+	margin-bottom: 0.3rem;
+	margin-top: 0.24rem;
+}
+.box div{
+	width: 100%;
+	height: 1.5rem;
+	border-bottom: 1px solid #E3E3E3;
+}
+.box span{
+	width: 20%;
+	line-height: 1.5rem;
+	margin:0.5rem 0.3rem 0  0.3rem;
+}
+.box input{
+	width: 80%;
+	background: transparent;
+	border: none;
+	position: relative;
+	left:18%;
+	top:-1.15rem;
+}
+.get_code{
+	color: #FF4878;
+	position: relative;
+	top:-2.2rem;
+	margin-left:5rem;
+	font-weight: 600;
+}
+
+.btn{
+	width: 80%;
+	height:1rem;
+	font-size: 0.36rem;
+	background: #FF4878;
+	color: #fff;
+	display: block;
+	margin:0.5rem auto;
+	border-radius: 0.1rem;
+}
+
+.yzm{
+	color: #8B80FE;
+	top: 0.3rem;
+}

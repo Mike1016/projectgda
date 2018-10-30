@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>买入-已完成</title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/buysell.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft back1"></span>
+		<p class="header_title">买入订单</p>
+	</div>
+	
+	<div class="cont">
+		<div class="flexrow between">
+			<div onclick="window.location.href='buymatch.html'">
+				<img src="img/index/mairu-daipipei.png" alt="" />
+				<p>待匹配</p>
+			</div>
+			<div onclick="window.location.href='buypayment.html'">
+				<img src="img/index/mairu-daifukuan.png" alt="" />
+				<p>待付款</p>
+			</div>
+			<div  onclick="window.location.href='buydete.html'">
+				<img src="img/index/mairu-daiqueren.png" alt="" />
+				<p>待确定</p>
+			</div>
+			<div class="active"  onclick="window.location.href='buyover.html'">
+				<img src="img/index/mairu-yiwancheng.png" alt="" />
+				<p>已完成</p>
+			</div>
+		</div>
+		
+		<!--<div class="card" data-mrddid="6">
+			<div class="ddxx">
+				<div class="flexrow jcsb">
+					<span>订单编号：2121564654654654</span>
+				</div>
+				<div class="flexrow jcsb" style="border-top: 1px solid #F2F2F2;">
+					<span>14000</span>
+					<span>申请时间 2018-08-20 18:29:22</span>
+				</div>
+			</div>
+		</div>-->
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+$(()=>{
+	ajax({
+		type:'get',
+		url:'/app/platoon/showPlatoonOrder.do',
+		data:{
+			sessionId:sid,
+			state:3
+		},
+		success:function(res){
+			console.log(res);
+			if(res.status == 1){
+				var h='';
+				if(res.data.length > 0){
+					$.each(res.data, function(k,v) {
+						h+=`
+		<div class="card" data-mrddid="${v.id}">
+			<div class="">
+				<div class="flexrow jcsb">
+					<span>订单编号：${v.orderNo}</span>
+				</div>
+				<div class="flexrow jcsb" style="border-top: 1px solid #F2F2F2;">
+					<span>${v.account}</span>
+					<span>成交时间 :${v.confirmTime}</span>
+				</div>
+			</div>
+		</div>
+						`;
+					});
+				}else{
+					h+=`
+						<div class="wsj">暂无数据·····</div>
+					`;
+				}
+			$(".cont").append(h);
+		}else{
+			mui.toast(res.msg);
+		}
+		}
+	});
+})
+
+$('.content').on('tap','.card',function(){
+	var that = $(this);
+	var id = that.attr('data-mrddid');
+	localStorage['mrddid'] = id;
+	location.href="viewCompletedPurchaseOrder.html";
+})
+</script>
+</html>

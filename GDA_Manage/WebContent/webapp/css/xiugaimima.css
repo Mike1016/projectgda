@@ -1,0 +1,41 @@
+
+.srk{
+	border-bottom: 1px solid #ddd;
+	width: 100%;
+	padding-top: 4%;
+	padding-bottom: 0.1rem;
+}
+.tb{
+	width: 30%;
+	line-height: 40px;
+	margin-left: 5%;
+}
+.inpt{
+	width: 65%;
+}
+.btnkuang{
+	width: 80%;
+	margin:auto;
+	padding-top: 0.6rem;
+	text-align: center;
+	color: #fff;
+	font-size: 0.45rem;
+	font-weight: 600;
+}
+.btnkuang>a{
+	color: #007AFF;
+	font-size: 0.45rem;
+	vertical-align: baseline;
+}
+.btn{
+	font-size: 0.5rem;
+	padding: 0.3rem 0;
+}
+.card>div:last-child{
+	border-bottom: none;
+}
+.card{
+	margin: 0.3rem 0;
+	padding: 0 0.3rem;
+	background-color: #fff;
+}

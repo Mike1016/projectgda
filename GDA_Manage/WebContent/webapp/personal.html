@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no" />
+	<title>用户中心</title>
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/personal.css" />
+</head>
+<body>
+<div class="content">
+	<div class="headers">
+		<span class="mui-icon mui-icon-arrowleft " onclick="window.location.href='index.html'"></span>
+		<p class="header_title">用户中心</p>
+	</div>
+	
+	<div class="cont">
+		<div class="user">
+			<div onclick="window.location.href='level.html'">
+				<img src="img/personal/huiyuanjibie.png" alt="" />
+				会员级别
+				<span class="mui-icon mui-icon-arrowright"></span>
+			</div>
+			<div onclick="window.location.href='myself.html'">
+				<img src="img/personal/gerenxinxi.png" alt="" />
+				个人信息
+				<span class="mui-icon mui-icon-arrowright"></span>
+			</div>			
+		</div>
+		
+		
+		<div class="money">
+			<div onclick="window.location.href='vitality.html'">
+				<img src="img/personal/shengmingli.png" alt="" />
+				生命力
+				<span class="right"></span>
+				<span class="mui-icon mui-icon-arrowright"></span>
+			</div>
+			<div onclick="window.location.href='activityValue.html'">
+				<img src="img/personal/huodongzhi.png" alt="" />
+				活动值
+				<span class="mui-icon mui-icon-arrowright"></span>
+			</div>
+			<div onclick="window.location.href='promotion.html'">
+				<img src="img/personal/tuiguang.png" alt="" />
+				我要推广
+				<span class="mui-icon mui-icon-arrowright"></span>
+			</div>
+		</div>
+		
+		<div class="other">
+			<div onclick="window.location.href='pwd.html'"> 
+				<img src="img/personal/mimaguanli.png" alt="" />
+				密码管理
+				<span class="mui-icon mui-icon-arrowright"></span>
+			</div>	
+			<div onclick="window.location.href='announcement.html'">
+				<img src="img/personal/pingtaigonggao.png" alt="" />
+				平台公告
+				<span class="mui-icon mui-icon-arrowright"></span>
+			</div>	
+			<div onclick="window.location.href='about.html'">
+				<img src="img/personal/gunyuwomen.png" alt="" />
+				关于我们
+				<span class="mui-icon mui-icon-arrowright"></span>
+			</div>	
+			<div onclick="window.location.href='customerService.html'">
+				<img src="img/personal/lianxikefu.png" alt="" />
+				联系客服
+				<span class="mui-icon mui-icon-arrowright"></span>
+			</div>
+			<div class="logout">安全退出</div>
+		</div>
+		
+		
+		
+	</div>
+	
+	
+	
+	
+</div>		
+	
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+$('.logout').click(function() {
+	var btnArray = ['是', '否'];
+	mui.confirm('', '确认退出登录？', btnArray, function(e) {
+		if(e.index == 0) {
+			ajax({
+				type:"post",
+				url:"/app/customer/quit.do",
+				data:{sessionId:sid},
+				success:function(res){
+					if(res.status == 1){
+						localStorage.clear();
+						location.href="login.html";
+					}else{
+						mui.toast(res.msg);
+					}
+				}
+			});
+			
+		} else {
+			
+		}
+	})
+})
+</script>
+
+</body>
+</html>

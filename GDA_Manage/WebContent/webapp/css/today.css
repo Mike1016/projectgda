@@ -1,0 +1,51 @@
+.headers{
+	position: fixed;
+	z-index: 9;
+}
+.cont{
+	position: relative;
+	top: 1rem;
+	margin-top: 0.24rem;
+	background: #fff;
+}
+.cont div{
+	height: 1rem;
+	line-height: 1rem;
+	border-bottom: 1px solid #f2f2f2;
+}
+.text{
+	height: auto;
+	background: #fff;
+}
+.text div{
+	float: left;
+	text-align: center;
+	margin: 0 auto;
+}
+.text div{
+	width: 33.3%;
+}
+.cont:last-child div{
+	margin-bottom: 0.24rem;
+}
+
+
+
+/*直推*/
+.title div{
+	float: left;
+	width:33.33% ;
+	text-align: center;
+}
+.title:last-child div{
+	margin-bottom: 0.24rem;
+}
+.income div:nth-child(3){
+	color: #8B80FE;
+}
+
+
+.jhbtn>span{
+	padding: 0.1rem 0.2rem;
+	border:1px solid #8A6DE9;
+}

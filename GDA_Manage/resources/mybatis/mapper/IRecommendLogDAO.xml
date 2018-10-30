@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daka.dao.recommendLog.IRecommendLogDAO">
+    <!--后台 分页 查询所有-->
+    <select id="queryRecommendLoglistPage" resultType="pd" parameterType="page">
+        select rlt.* , ct.user_name AS userName,
+        (
+            SELECT
+            user_name
+            FROM
+            customer_t ct
+            WHERE
+            ct.id = rlt.referee_id
+        ) AS coverUserName from recommend_log_t rlt
+        LEFT JOIN customer_t ct ON rlt.customer_id = ct.id
+        <if test="pd.userName!= null and pd.userName != ''">
+            where ct.user_name like CONCAT('%', #{pd.userName}, '%')
+        </if>
+        order by rlt.create_time desc
+    </select>
+
+    <select id="queryExtensionAward" resultType="com.daka.entry.dto.CustomerDTO" parameterType="java.lang.Integer">
+        SELECT t1.user_name,t2.account AS extensionAccount FROM customer_t t1 LEFT JOIN recommend_log_t t2 ON t1.id = t2.customer_id WHERE t2.referee_id=#{id}
+    </select>
+
+    <!--批量新增日志-->
+    <insert id="saveRecommendList">
+        insert into recommend_log_t
+        (
+          customer_id, referee_id, `level`, self_last_account,
+          child_account, real_account, account, ratio, create_time
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+              #{item.customerId, jdbcType=INTEGER}, #{item.refereeId, jdbcType=INTEGER},
+              #{item.level, jdbcType=VARCHAR}, #{item.selfLastAccount, jdbcType=DECIMAL},
+              #{item.childAccount, jdbcType=DECIMAL}, #{item.realAccount, jdbcType=DECIMAL},
+              #{item.account, jdbcType=DECIMAL}, #{item.ratio, jdbcType=DECIMAL},
+              #{item.createTime, jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateBatchCustomerBonus" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update customer_t set bonus = bonus + #{item.account}
+            where id = #{item.refereeId} and state = 1
+        </foreach>
+    </update>
+</mapper>
